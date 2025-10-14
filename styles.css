@@ -18,20 +18,18 @@ html, body {
   z-index: 0;
 }
 
-/* ===== Contador (DÍAS – HORAS – MIN) =====
-   Ajusta estos 4 valores si los números no caen exactos en el marco */
+/* ===== Contador (DÍAS – HORAS – MIN) ===== */
 #countdown{
   position: fixed;
-  top: 41.5%;     /* subir/bajar */
-  left: 12%;      /* mover hacia la derecha bajando este % */
-  right: 12%;     /* mover hacia la izquierda subiéndolo */
-  height: 10.8%;  /* más alto o más bajo el bloque */
+  top: 41.5%;
+  left: 12%;
+  right: 12%;
+  height: 10.8%;
   z-index: 5;
   display: flex;
   align-items: center;
   pointer-events: none;
 }
-
 #countdown .grid{
   width: 100%;
   height: 100%;
@@ -40,32 +38,25 @@ html, body {
   gap: 10px;
   align-items: center;
 }
-
 #countdown .cell{
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
 }
-
 #countdown .cell span{
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: .5px;
   line-height: 1;
   color: #FFD37A;
   text-shadow:
-    0 0 10px rgba(255,165,60,0.38),
-    0 0 22px rgba(255,165,60,0.38),
-    0 1px 0 rgba(0,0,0,0.25);
-  /* tamaño responsivo básico y compatible */
-  font-size: 6.2vw;
+    0 0 10px rgba(255,165,60,.38),
+    0 0 22px rgba(255,165,60,.38),
+    0 1px 0 rgba(0,0,0,.25);
+  font-size: 6.2vw;     /* responsive simple */
 }
-@media (min-width: 1200px){
-  #countdown .cell span{ font-size: 54px; }
-}
-@media (max-width: 420px){
-  #countdown .cell span{ font-size: 26px; }
-}
+@media (min-width: 1200px){ #countdown .cell span{ font-size: 54px; } }
+@media (max-width: 420px){  #countdown .cell span{ font-size: 26px; } }
 
 /* ===== Murciélagos (PNG en grupos) ===== */
 #bats{
@@ -75,13 +66,12 @@ html, body {
   pointer-events: none;
   overflow: hidden;
 }
-
-/* MUY grandes por defecto */
 .bat{
   position: absolute;
-  width: 34vw;           /* tamaño principal relativo */
-  max-width: 640px;      /* tope grande */
-  min-width: 320px;      /* mínimo */
+  /* tamaño base grande; el JS puede sobreescribir width para variedad */
+  width: 34vw;
+  max-width: 640px;
+  min-width: 320px;
   height: auto;
 
   background-image: url("assets/img/bats.png");
@@ -90,7 +80,7 @@ html, body {
   background-position: center;
 
   opacity: 0;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.35));
 }
 
 /* Izq -> Der */
@@ -107,16 +97,16 @@ html, body {
   animation: fly-rtl 5s ease-in-out forwards;
 }
 
-/* Animaciones simples y compatibles */
+/* Animaciones (solo manejan translateX y opacidad) */
 @keyframes fly-ltr{
   0%   { opacity: 0; transform: translateX(-120vw); }
-  10%  { opacity: 0.95; }
-  70%  { opacity: 0.95; transform: translateX(0); }
+  10%  { opacity: .95; }
+  70%  { opacity: .95; transform: translateX(0); }
   100% { opacity: 0; transform: translateX(120vw); }
 }
 @keyframes fly-rtl{
   0%   { opacity: 0; transform: translateX(120vw); }
-  10%  { opacity: 0.95; }
-  70%  { opacity: 0.95; transform: translateX(0); }
+  10%  { opacity: .95; }
+  70%  { opacity: .95; transform: translateX(0); }
   100% { opacity: 0; transform: translateX(-120vw); }
 }
