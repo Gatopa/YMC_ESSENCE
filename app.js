@@ -28,32 +28,33 @@
   setInterval(update, 1000);
 })();
 
-// ===== Murciélagos simples usando tu bats.png =====
+// ===== Murciélagos (más grandes) =====
 (function(){
   const wrap = document.getElementById("bats");
   if(!wrap) return;
 
-  const N = 8;                       // número de grupos
-  const durMin=3.6, durMax=6.2;      // duración
-  const delaySpread=1.6;             // dispersión
+  const N = 8;                       // cantidad de grupos
+  const durMin = 3.6, durMax = 6.2;  // duración
+  const delaySpread = 1.6;           // dispersión de salida
 
   const rand = (a,b)=> a + Math.random()*(b-a);
 
   for(let i=0;i<N;i++){
     const el = document.createElement("div");
     el.className = "bat";
-    if(Math.random()<0.5) el.classList.add("rtl");
-    // AUMENTÉ la escala para algunos grupos
-    el.style.setProperty("--s", rand(0.8, 1.4).toFixed(2));  // antes .55–1.0
+    if(Math.random() < 0.5) el.classList.add("rtl");
+
+    // ESCALA MUCHO MAYOR AQUÍ
+    el.style.setProperty("--s", rand(1.0, 1.8).toFixed(2)); // antes 0.8–1.4
     el.style.setProperty("--r", `${rand(-8,8).toFixed(1)}deg`);
     el.style.setProperty("--y",  `${rand(10,80).toFixed(1)}vh`);
     el.style.setProperty("--y2", `${rand(10,80).toFixed(1)}vh`);
-    el.style.setProperty("--t",  `${rand(durMin,durMax).toFixed(2)}s`);
-    el.style.setProperty("--d",  `${rand(0,delaySpread).toFixed(2)}s`);
+    el.style.setProperty("--t",  `${rand(durMin, durMax).toFixed(2)}s`);
+    el.style.setProperty("--d",  `${rand(0, delaySpread).toFixed(2)}s`);
+
     wrap.appendChild(el);
   }
 
-  // Limpia el DOM tras la animación
   const total = (durMax + delaySpread + 0.8) * 1000;
   setTimeout(()=> wrap.remove(), total);
 })();
