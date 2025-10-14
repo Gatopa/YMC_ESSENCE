@@ -1,102 +1,108 @@
-/* ===== Config ===== */
-:root{
-  /* Ruta del ÚNICO fondo */
-  --bg-url: url("assets/img/fondo-poster.jpg");
-
-  /* Ruta de tus murciélagos PNG (fondo transparente) */
-  --bats-url: url("assets/img/bats.png");
-
-  /* Área donde van los números, en % del viewport */
-  --ctr-top: 41.5%;
-  --ctr-left: 12%;
-  --ctr-right: 12%;
-  --ctr-height: 10.8%;
-
-  /* Estilo números */
-  --txt: #FFD37A;
-  --glow: rgba(255,165,60,0.38);
-
-  /* Espaciado entre las 3 celdas virtuales */
-  --gap: 10px;
-  --pad: 10px;
+/* ===== Base ===== */
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #000;
+  font-family: Georgia, serif;
 }
 
-/* ===== Base ===== */
-html, body { height:100%; margin:0; background:#000; color-scheme:dark; }
-* { box-sizing:border-box; }
-
-/* Fondo único */
-#bg{
-  position:fixed; inset:0;
-  background-image: var(--bg-url);
+/* ===== Fondo único ===== */
+#bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("./assets/img/fondo-poster.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index:0;
+  z-index: 0;
 }
 
-/* Contador encima del marco dibujado en la imagen */
-#countdown{
-  position:fixed;
-  top: var(--ctr-top);
-  left: var(--ctr-left);
-  right: var(--ctr-right);
-  height: var(--ctr-height);
-  z-index:5;
-  display:flex; align-items:center;
-  pointer-events:none;
-}
-#countdown .grid{
-  width:100%; height:100%;
-  display:grid; grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--gap); align-items:center;
-}
-#countdown .cell{
-  display:flex; align-items:center; justify-content:center;
-  padding: var(--pad);
-}
-#countdown .cell span{
-  font-family: Georgia, serif;
-  font-weight:700; letter-spacing:.5px; line-height:1;
-  font-size: clamp(26px, 6.5vw, 54px);
-  color: var(--txt);
-  text-shadow: 0 0 10px var(--glow), 0 0 22px var(--glow), 0 1px 0 rgba(0,0,0,.25);
+/* ===== Contador (DÍAS–HORAS–MIN) ===== */
+#countdown {
+  position: fixed;
+  top: 41.5%;
+  left: 12%;
+  right: 12%;
+  height: 10.8%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
 }
 
-/* ===== Murciélagos muy simples: grupos que cruzan y se desvanecen ===== */
-#bats{ position:fixed; inset:0; z-index:999; pointer-events:none; overflow:hidden; }
-.bat{
-  position:absolute;
-  width: clamp(120px, 16vw, 260px);
-  height: clamp(90px, 12vw, 180px);
-  background-image: var(--bats-url);
+#countdown .grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+#countdown .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+#countdown .cell span {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  color: #FFD37A;
+  text-shadow:
+    0 0 10px rgba(255,165,60,0.38),
+    0 0 22px rgba(255,165,60,0.38),
+    0 1px 0 rgba(0,0,0,0.25);
+  font-size: 6.2vw;
+}
+
+/* ===== Murciélagos (tamaño normal) ===== */
+#bats {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bat {
+  position: absolute;
+  width: 18vw;          /* tamaño base normal */
+  max-width: 360px;
+  min-width: 120px;
+  height: auto;
+  background-image: url("./assets/img/bats.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity:0;
-  transform: translateX(-20vw) translateY(var(--y)) scale(var(--s)) rotate(var(--r));
-  animation: fly var(--t) ease-in-out forwards;
-  animation-delay: var(--d);
-  filter: drop-shadow(0 3px 4px rgba(0,0,0,.35));
-}
-.bat.rtl{
-  transform: translateX(120vw) translateY(var(--y)) scale(var(--s)) rotate(calc(-1 * var(--r)));
-  animation-name: fly-rtl;
-}
-@keyframes fly{
-  0%   { opacity:0; }
-  10%  { opacity:.9; }
-  70%  { opacity:.9; transform: translateX(55vw) translateY(var(--y2)) scale(var(--s)) rotate(calc(-1 * var(--r))); }
-  100% { opacity:0; transform: translateX(120vw) translateY(calc(var(--y2) + 4vh)) scale(var(--s)) rotate(0deg); }
-}
-@keyframes fly-rtl{
-  0%   { opacity:0; }
-  10%  { opacity:.9; }
-  70%  { opacity:.9; transform: translateX(-55vw) translateY(var(--y2)) scale(var(--s)) rotate(var(--r)); }
-  100% { opacity:0; transform: translateX(-120vw) translateY(calc(var(--y2) + 4vh)) scale(var(--s)) rotate(0deg); }
+  opacity: 0;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.35));
 }
 
-/* Móvil */
-@media (max-width:480px){
-  :root{ --gap:8px; --pad:8px; }
+.bat.ltr {
+  left: 0; top: 0;
+  transform: translateX(-120vw);
+  animation: fly-ltr 5s ease-in-out forwards;
+}
+
+.bat.rtl {
+  right: 0; top: 0;
+  transform: translateX(120vw);
+  animation: fly-rtl 5s ease-in-out forwards;
+}
+
+@keyframes fly-ltr {
+  0%   { opacity: 0; transform: translateX(-120vw); }
+  10%  { opacity: 0.95; }
+  70%  { opacity: 0.95; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(120vw); }
+}
+
+@keyframes fly-rtl {
+  0%   { opacity: 0; transform: translateX(120vw); }
+  10%  { opacity: 0.95; }
+  70%  { opacity: 0.95; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(-120vw); }
 }
