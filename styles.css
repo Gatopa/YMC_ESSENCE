@@ -1,0 +1,130 @@
+:root{
+  /* Tamaño del lienzo principal */
+  --stage-max: 980px;
+
+  /* Posición del contador DENTRO del PNG del marco */
+  /* Ajusta estos 4 valores para encajar perfecto según tu imagen */
+  --inset-top: 16%;
+  --inset-right: 9%;
+  --inset-bottom: 16%;
+  --inset-left: 9%;
+
+  /* Ancho del marco (en relación al contenedor) */
+  --marco-w: min(860px, 94vw);
+
+  /* Tipografía/colores del contador */
+  --txt: #FFD37A;
+  --glow: rgba(255,165,60,.38);
+  --shadow: rgba(0,0,0,.55);
+
+  /* Números y espaciado */
+  --ctr-gap: 10px;
+  --ctr-pad: 10px;
+}
+
+/* Reset suave */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:#f3f3f3;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:#0b0b0f;
+  overflow-x:hidden;
+}
+
+/* ===== Fondo ===== */
+#bg{ position:fixed; inset:0; z-index:0; }
+#bg > img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  filter: saturate(1.02) contrast(1.02);
+}
+#overlay{
+  position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.35) 60%, rgba(0,0,0,.5));
+}
+
+/* ===== Escenario ===== */
+#stage{
+  position:relative; z-index:2;
+  max-width:var(--stage-max);
+  margin: 0 auto;
+  padding: clamp(16px, 4vw, 28px);
+}
+
+/* (Opcional) Título en texto
+.title{
+  text-align:center; margin: 16px 0 6px;
+  font-family: "Cinzel", serif; font-weight:700; letter-spacing:.6px;
+  font-size: clamp(28px, 6vw, 56px);
+  text-shadow: 0 0 18px rgba(255,180,70,.3), 0 1px 0 rgba(0,0,0,.35);
+  color:#FFD68A;
+}
+*/
+
+/* ===== FALTAN... ===== */
+.faltan-wrap{
+  display:flex; justify-content:center; align-items:center;
+  margin: clamp(8px, 2.2vw, 14px) 0 8px;
+}
+.faltan{ width: min(520px, 70vw); height:auto; display:block; }
+
+/* ===== Marco + contador ===== */
+.counter-wrap{
+  position:relative; width: var(--marco-w);
+  margin: 0 auto;
+}
+.counter-wrap .marco{
+  width:100%; height:auto; display:block;
+}
+
+/* Posición exacta del grid de números dentro del PNG del marco */
+#countdown{
+  position:absolute; inset: var(--inset-top) var(--inset-right) var(--inset-bottom) var(--inset-left);
+  width:auto; height:auto;
+  pointer-events:none; /* para no tapar nada */
+}
+
+/* ===== Estilo del contador ===== */
+.ctr-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--ctr-gap);
+  align-items:center;
+  height:100%;
+}
+.slot{
+  display:flex; align-items:center; justify-content:center;
+  padding: var(--ctr-pad);
+  min-height: clamp(60px, 10vw, 110px);
+  /* Sin fondo/borde: lo da el PNG del marco */
+}
+
+.slot span, .slot .mmss{
+  font-family:"Cinzel","Playfair Display",Georgia,serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing:.5px; font-weight:700;
+  font-size: clamp(28px, 7.2vw, 58px);
+  line-height:1; color: var(--txt);
+  text-shadow:
+    0 0 10px var(--glow),
+    0 0 22px var(--glow),
+    0 1px 0 rgba(0,0,0,.25);
+  filter: drop-shadow(0 2px 6px var(--shadow));
+  border-radius: 12px;
+}
+
+.mmss i{ font-style:normal; opacity:.9; margin: 0 .3ch; }
+
+.social{ text-align:center; margin: 18px 0; color:#d7c38c; font-size:14px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 600px){
+  :root{
+    --inset-top: 15%;
+    --inset-right: 8%;
+    --inset-bottom: 15%;
+    --inset-left: 8%;
+    --ctr-gap: 8px;
+    --ctr-pad: 8px;
+  }
+}
