@@ -1,18 +1,19 @@
 :root{
+  /* Rutas */
   --bg-url: url("assets/img/fondo-poster.jpg");
   --bats-url: url("assets/img/bats.png");
 
-  /* Posición y tamaño del bloque del contador (ajústalo si hace falta) */
+  /* Posición / tamaño del bloque del contador */
   --ctr-top: 41.5%;
   --ctr-left: 12%;
   --ctr-right: 12%;
   --ctr-height: 10.8%;
 
-  /* Estilo de dígitos */
+  /* Estilo dígitos */
   --txt: #FFD37A;
   --glow: rgba(255,165,60,0.38);
 
-  /* Espaciado interno virtual entre las 3 celdas */
+  /* Espaciado virtual entre las 3 celdas */
   --gap: 10px;
   --pad: 10px;
 }
@@ -34,7 +35,7 @@ html, body{
   z-index:0;
 }
 
-/* CONTADOR (DÍAS–HORAS–MIN) */
+/* ===== CONTADOR ===== */
 #countdown{
   position:fixed;
   top: var(--ctr-top);
@@ -73,7 +74,7 @@ html, body{
     0 1px 0 rgba(0,0,0,.25);
 }
 
-/* MURCIÉLAGOS (PNG en grupos) */
+/* ===== MURCIÉLAGOS (PNG en grupos) ===== */
 #bats{
   position:fixed;
   inset:0;
@@ -81,9 +82,11 @@ html, body{
   pointer-events:none;
   overflow:hidden;
 }
+
+/* AÚN MÁS GRANDES AQUÍ */
 .bat{
   position:absolute;
-  width: clamp(180px, 22vw, 360px);
+  width: clamp(260px, 28vw, 520px);  /* antes: 180–360 */
   height: auto;
   background-image: var(--bats-url);
   background-size: contain;
@@ -93,7 +96,7 @@ html, body{
   transform: translateX(-20vw) translateY(var(--y)) scale(var(--s)) rotate(var(--r));
   animation: fly var(--t) ease-in-out forwards;
   animation-delay: var(--d);
-  filter: drop-shadow(0 3px 4px rgba(0,0,0,.35));
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.35));
 }
 .bat.rtl{
   transform: translateX(120vw) translateY(var(--y)) scale(var(--s)) rotate(calc(-1 * var(--r)));
@@ -113,7 +116,7 @@ html, body{
   100% { opacity:0; transform: translateX(-120vw) translateY(calc(var(--y2) + 4vh)) scale(var(--s)) rotate(0deg); }
 }
 
-/* Móvil (si necesitas apretar un poco los números) */
+/* Móvil */
 @media (max-width:480px){
   :root{ --gap:8px; --pad:8px; }
 }
