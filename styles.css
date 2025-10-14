@@ -1,108 +1,74 @@
 /* ===== Base ===== */
-html, body {
-  height: 100%;
-  margin: 0;
-  background: #000;
+html, body{
+  height:100%;
+  margin:0;
+  background:#000;
   font-family: Georgia, serif;
 }
 
 /* ===== Fondo único ===== */
-#bg {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: url("./assets/img/fondo-poster.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 0;
+#bg{
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  background-image:url("assets/img/fondo-poster.jpg"); /* <-- ruta correcta */
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  z-index:0;
 }
 
 /* ===== Contador (DÍAS–HORAS–MIN) ===== */
-#countdown {
-  position: fixed;
-  top: 41.5%;
-  left: 12%;
-  right: 12%;
-  height: 10.8%;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  pointer-events: none;
+#countdown{
+  position:fixed;
+  top:41.5%;
+  left:12%;
+  right:12%;
+  height:10.8%;
+  z-index:5;
+  display:flex; align-items:center;
+  pointer-events:none;
+}
+#countdown .grid{
+  width:100%; height:100%;
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  gap:10px; align-items:center;
+}
+#countdown .cell{
+  display:flex; align-items:center; justify-content:center;
+  padding:10px;
+}
+#countdown .cell span{
+  font-weight:700; letter-spacing:.5px; line-height:1;
+  color:#FFD37A;
+  text-shadow:0 0 10px rgba(255,165,60,.38),
+              0 0 22px rgba(255,165,60,.38),
+              0 1px 0 rgba(0,0,0,.25);
+  font-size:6.2vw;
 }
 
-#countdown .grid {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  align-items: center;
+/* ===== Murciélagos ===== */
+#bats{
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  z-index:999; pointer-events:none; overflow:hidden;
 }
-
-#countdown .cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
+.bat{
+  position:absolute;
+  width:18vw; max-width:360px; min-width:120px; height:auto;
+  background-image:url("assets/img/bats.png"); /* <-- ruta correcta */
+  background-size:contain; background-repeat:no-repeat; background-position:center;
+  opacity:0; filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));
 }
+.bat.ltr{ left:0; top:0; transform:translateX(-120vw); animation:fly-ltr 5s ease-in-out forwards; }
+.bat.rtl{ right:0; top:0; transform:translateX(120vw);  animation:fly-rtl 5s ease-in-out forwards; }
 
-#countdown .cell span {
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  line-height: 1;
-  color: #FFD37A;
-  text-shadow:
-    0 0 10px rgba(255,165,60,0.38),
-    0 0 22px rgba(255,165,60,0.38),
-    0 1px 0 rgba(0,0,0,0.25);
-  font-size: 6.2vw;
+@keyframes fly-ltr{
+  0%{opacity:0; transform:translateX(-120vw);}
+  10%{opacity:.95;}
+  70%{opacity:.95; transform:translateX(0);}
+  100%{opacity:0; transform:translateX(120vw);}
 }
-
-/* ===== Murciélagos (tamaño normal) ===== */
-#bats {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 999;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.bat {
-  position: absolute;
-  width: 18vw;          /* tamaño base normal */
-  max-width: 360px;
-  min-width: 120px;
-  height: auto;
-  background-image: url("./assets/img/bats.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0;
-  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.35));
-}
-
-.bat.ltr {
-  left: 0; top: 0;
-  transform: translateX(-120vw);
-  animation: fly-ltr 5s ease-in-out forwards;
-}
-
-.bat.rtl {
-  right: 0; top: 0;
-  transform: translateX(120vw);
-  animation: fly-rtl 5s ease-in-out forwards;
-}
-
-@keyframes fly-ltr {
-  0%   { opacity: 0; transform: translateX(-120vw); }
-  10%  { opacity: 0.95; }
-  70%  { opacity: 0.95; transform: translateX(0); }
-  100% { opacity: 0; transform: translateX(120vw); }
-}
-
-@keyframes fly-rtl {
-  0%   { opacity: 0; transform: translateX(120vw); }
-  10%  { opacity: 0.95; }
-  70%  { opacity: 0.95; transform: translateX(0); }
-  100% { opacity: 0; transform: translateX(-120vw); }
+@keyframes fly-rtl{
+  0%{opacity:0; transform:translateX(120vw);}
+  10%{opacity:.95;}
+  70%{opacity:.95; transform:translateX(0);}
+  100%{opacity:0; transform:translateX(-120vw);}
 }
