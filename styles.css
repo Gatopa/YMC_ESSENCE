@@ -11,7 +11,7 @@ html, body {
 #bg{
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-image: url("assets/img/fondo-poster.jpg");
+  background-image: url("assets/img/fondo-poster.jpg"); /* <— ruta correcta */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -53,7 +53,7 @@ html, body {
     0 0 10px rgba(255,165,60,.38),
     0 0 22px rgba(255,165,60,.38),
     0 1px 0 rgba(0,0,0,.25);
-  font-size: 6.2vw;     /* responsive simple */
+  font-size: 6.2vw;
 }
 @media (min-width: 1200px){ #countdown .cell span{ font-size: 54px; } }
 @media (max-width: 420px){  #countdown .cell span{ font-size: 26px; } }
@@ -68,13 +68,12 @@ html, body {
 }
 .bat{
   position: absolute;
-  /* tamaño base grande; el JS puede sobreescribir width para variedad */
   width: 34vw;
   max-width: 640px;
   min-width: 320px;
   height: auto;
 
-  background-image: url("assets/img/bats.png");
+  background-image: url("assets/img/bats.png"); /* <— ruta correcta */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -82,22 +81,16 @@ html, body {
   opacity: 0;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,.35));
 }
-
-/* Izq -> Der */
 .bat.ltr{
   left: 0; top: 0;
   transform: translateX(-120vw);
   animation: fly-ltr 5s ease-in-out forwards;
 }
-
-/* Der -> Izq */
 .bat.rtl{
   right: 0; top: 0;
   transform: translateX(120vw);
   animation: fly-rtl 5s ease-in-out forwards;
 }
-
-/* Animaciones (solo manejan translateX y opacidad) */
 @keyframes fly-ltr{
   0%   { opacity: 0; transform: translateX(-120vw); }
   10%  { opacity: .95; }
