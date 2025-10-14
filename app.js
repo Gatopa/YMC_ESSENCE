@@ -30,12 +30,12 @@
   setInterval(update, 1000);
 })();
 
-// ===== Murciélagos grandes (PNG) =====
+// ===== Murciélagos (corregido: sin pisar transform de la animación) =====
 (function(){
   var wrap = document.getElementById("bats");
   if(!wrap) return;
 
-  var N = 8;                 // cuántos grupos salen
+  var N = 8;                 // cantidad de grupos
   var durMin = 4.2, durMax = 6.8;
   var delaySpread = 1.8;
 
@@ -46,26 +46,25 @@
     var rtl = Math.random() < 0.5;
     bat.className = "bat " + (rtl ? "rtl" : "ltr");
 
-    // Altura de vuelo (vh). Solo arriba: cambia 8,80 por 5,45
+    // Altura de vuelo (en vh). Solo arriba: usa rand(5,45)
     var topVH = rand(8, 80);
     bat.style.top = topVH + "vh";
 
     // Duración y retraso por grupo
-    var dur = rand(durMin, durMax).toFixed(2) + "s";
-    var delay = rand(0, delaySpread).toFixed(2) + "s";
-    bat.style.animationDuration = dur;
-    bat.style.animationDelay = delay;
+    bat.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
+    bat.style.animationDelay = rand(0, delaySpread).toFixed(2) + "s";
 
-    // Tamaño extra y rotación ligera
-    var scale = rand(1.1, 1.8).toFixed(2);   // más grandes
-    var rot = rand(-8, 8).toFixed(1);
-    var base = rtl ? "translateX(120vw)" : "translateX(-120vw)";
-    bat.style.transform = base + " scale(" + scale + ") rotate(" + rot + "deg)";
+    // Tamaño extra (no tocamos transform): distintos anchos
+    bat.style.width = Math.round(rand(32, 44)) + "vw"; // 32–44vw
+    bat.style.maxWidth = "700px";
+    bat.style.minWidth = "340px";
+
+    // Nota: NO seteamos bat.style.transform aquí para no anular la animación
 
     wrap.appendChild(bat);
   }
 
-  // Limpia el DOM al terminar
+  // Limpia el DOM tras la animación
   var total = (durMax + delaySpread + 1.0) * 1000;
   setTimeout(function(){
     if(wrap && wrap.parentNode){ wrap.parentNode.removeChild(wrap); }
