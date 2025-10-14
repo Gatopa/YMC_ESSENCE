@@ -2,25 +2,25 @@
   /* Ruta de TU ÚNICA imagen de fondo */
   --bg-url: url("assets/img/fondo-poster.jpg");
 
-  /* Área donde van los números (porcentajes respecto a toda la pantalla/viewport) */
-  /* Ajusta estos valores hasta que calce exacto dentro de tus 3 recuadros */
-  --ctr-top:    41.5%;  /* distancia desde arriba */
-  --ctr-left:   12.0%;  /* desde la izquierda */
-  --ctr-right:  12.0%;  /* desde la derecha */
-  --ctr-height: 10.8%;  /* altura del bloque de cifras */
+  /* Área del contador (ajusta para encajar en tus 3 recuadros) */
+  --ctr-top:    41.5%;
+  --ctr-left:   12.0%;
+  --ctr-right:  12.0%;
+  --ctr-height: 10.8%;
 
-  /* Look de dígitos */
+  /* Look dígitos */
   --txt:   #FFD37A;
   --glow:  rgba(255,165,60,.38);
   --shadow: rgba(0,0,0,.55);
 
-  /* Espaciados internos de cada casilla virtual */
+  /* Espaciado interno virtual */
   --gap: 10px;
   --pad: 10px;
 }
 
+html,body{height:100%; margin:0; background:#000; color-scheme: dark;}
+
 /* Fondo único */
-html,body{height:100%; margin:0}
 #bg{
   position:fixed; inset:0;
   background-image: var(--bg-url);
@@ -30,23 +30,22 @@ html,body{height:100%; margin:0}
   z-index:0;
 }
 
-/* Bloque contador sobre el marco que ya está en la imagen */
+/* Contador sobre el marco que ya está en la imagen */
 #countdown{
   position:fixed;
-  /* Usamos top/left/right + height para encajar dentro del marco */
   top: var(--ctr-top);
   left: var(--ctr-left);
   right: var(--ctr-right);
   height: var(--ctr-height);
   z-index: 5;
-  pointer-events:none; /* no bloquea clics del fondo */
+  pointer-events:none;
   display:flex; align-items:center;
 }
 
 .ctr-grid{
   width:100%; height:100%;
   display:grid;
-  grid-template-columns: 1fr 1fr 1fr; /* 3 recuadros */
+  grid-template-columns: 1fr 1fr 1fr;
   gap: var(--gap);
   align-items:center;
 }
@@ -56,7 +55,7 @@ html,body{height:100%; margin:0}
   padding: var(--pad);
 }
 
-.slot span, .slot .mmss{
+.slot span{
   font-family:"Cinzel","Playfair Display",Georgia,serif;
   font-variant-numeric: tabular-nums;
   font-weight:700; letter-spacing:.5px; line-height:1;
@@ -69,13 +68,46 @@ html,body{height:100%; margin:0}
   filter: drop-shadow(0 2px 6px var(--shadow));
 }
 
-.mmss i{ font-style:normal; opacity:.9; margin:0 .3ch; }
+/* ===== Murciélagos on load ===== */
+#bat-swarm{
+  position:fixed; inset:0;
+  pointer-events:none; z-index:9999;
+  overflow:hidden;
+}
+.bat{
+  position:absolute;
+  width: clamp(28px, 5vw, 56px);
+  aspect-ratio: 1.8 / 1;
+  background:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 110'>\
+  <path fill='black' d='M100 50c8-18 23-32 48-39 7 9 14 14 25 16-9 8-15 17-17 28 10-4 21-4 34 0-8 10-18 16-30 18 3 6 5 12 6 19-12-4-22-11-30-21-8 10-18 17-30 21 1-7 3-13 6-19-12-2-22-8-30-18 13-4 24-4 34 0-2-11-8-20-17-28 11-2 18-7 25-16 25 7 40 21 48 39-9 7-19 11-30 12-10 1-19 0-28-2-9 2-18 3-28 2-11-1-21-5-30-12z'/>\
+</svg>") center/contain no-repeat;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.35));
+  opacity: 0;
+  transform: translateX(-10vw) translateY(var(--y0)) scale(var(--scale))
+             rotate(var(--rot));
+  animation:
+    bat-fly var(--dur,4s) var(--ease, cubic-bezier(.2,.7,.2,1)) forwards,
+    bat-flap .28s ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes bat-fly{
+  0%   { opacity:.0; transform: translateX(-12vw) translateY(var(--y0)) scale(var(--scale)) rotate(var(--rot)); }
+  8%   { opacity:.85; }
+  70%  { opacity:.85; transform: translateX(60vw) translateY(var(--y1)) scale(var(--scale)) rotate(calc(var(--rot) * -1)); }
+  100% { opacity:0; transform: translateX(110vw) translateY(calc(var(--y1) + 3vh)) scale(var(--scale)) rotate(0deg); }
+}
+@keyframes bat-flap{
+  from { transform: translateX(var(--tx,0)) translateY(var(--ycur,0)) scaleX(var(--scale)) scaleY(calc(var(--scale) * .80)) rotate(var(--rot)); }
+  to   { transform: translateX(var(--tx,0)) translateY(var(--ycur,0)) scaleX(var(--scale)) scaleY(calc(var(--scale) * 1.10)) rotate(var(--rot)); }
+}
 
-/* Ajustes móviles (por si el marco queda más pequeño en phone) */
+@media (prefers-reduced-motion: reduce){
+  #bat-swarm{ display:none !important; }
+}
+
+/* Ajustes móviles si hace falta */
 @media (max-width: 480px){
-  :root{
-    --gap: 8px; --pad: 8px;
-    /* Si ves que no encaja, afina estas 4 también: */
-    /* --ctr-top: 41.5%; --ctr-left: 10%; --ctr-right: 10%; --ctr-height: 12%; */
-  }
+  :root{ --gap: 8px; --pad: 8px; }
 }
