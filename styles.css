@@ -18,14 +18,14 @@ html, body {
   z-index: 0;
 }
 
-/* ===== Contador (DÍAS – HORAS – MIN) ===== */
-/* Ajusta estos 4 valores si los números no caen exactos dentro del marco */
+/* ===== Contador (DÍAS – HORAS – MIN) =====
+   Ajusta estos 4 valores si los números no caen exactos en el marco */
 #countdown{
   position: fixed;
-  top: 41.5%;      /* subir/bajar */
-  left: 12%;       /* mover a la derecha si bajas este % */
-  right: 12%;      /* mover a la izquierda si subes este % */
-  height: 10.8%;   /* más alto o más bajo el bloque */
+  top: 41.5%;     /* subir/bajar */
+  left: 12%;      /* mover hacia la derecha bajando este % */
+  right: 12%;     /* mover hacia la izquierda subiéndolo */
+  height: 10.8%;  /* más alto o más bajo el bloque */
   z-index: 5;
   display: flex;
   align-items: center;
@@ -57,10 +57,9 @@ html, body {
     0 0 10px rgba(255,165,60,0.38),
     0 0 22px rgba(255,165,60,0.38),
     0 1px 0 rgba(0,0,0,0.25);
-  /* Tamaño responsivo sencillo (sin clamp) */
+  /* tamaño responsivo básico y compatible */
   font-size: 6.2vw;
 }
-
 @media (min-width: 1200px){
   #countdown .cell span{ font-size: 54px; }
 }
@@ -68,7 +67,7 @@ html, body {
   #countdown .cell span{ font-size: 26px; }
 }
 
-/* ===== Murciélagos (PNG en grupos, animación robusta) ===== */
+/* ===== Murciélagos (PNG en grupos) ===== */
 #bats{
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -77,13 +76,12 @@ html, body {
   overflow: hidden;
 }
 
-/* Cada grupo de murciélagos (PNG) vuela de lado a lado */
+/* MUY grandes por defecto */
 .bat{
   position: absolute;
-  /* MUCHO más grandes por defecto; ajusta si quieres aún más */
-  width: 34vw;              /* tamaño principal relativo a pantalla */
-  max-width: 640px;         /* tope grande */
-  min-width: 320px;         /* mínimo */
+  width: 34vw;           /* tamaño principal relativo */
+  max-width: 640px;      /* tope grande */
+  min-width: 320px;      /* mínimo */
   height: auto;
 
   background-image: url("assets/img/bats.png");
@@ -95,21 +93,21 @@ html, body {
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
 }
 
-/* Dirección izquierda -> derecha */
+/* Izq -> Der */
 .bat.ltr{
   left: 0; top: 0;
   transform: translateX(-120vw);
   animation: fly-ltr 5s ease-in-out forwards;
 }
 
-/* Dirección derecha -> izquierda */
+/* Der -> Izq */
 .bat.rtl{
   right: 0; top: 0;
   transform: translateX(120vw);
   animation: fly-rtl 5s ease-in-out forwards;
 }
 
-/* Keyframes sin variables ni calc complicados */
+/* Animaciones simples y compatibles */
 @keyframes fly-ltr{
   0%   { opacity: 0; transform: translateX(-120vw); }
   10%  { opacity: 0.95; }
