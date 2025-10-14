@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YMC HALLOWEEN — Invitación</title>
+  <meta name="theme-color" content="#0b0b0f" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Fondo póster -->
+  <div id="bg">
+    <img src="assets/img/fondo-poster.jpg" alt="" />
+    <div id="overlay"></div>
+  </div>
+
+  <!-- Escenario -->
+  <main id="stage" role="main">
+    <!-- Título (si lo necesitas en texto, sino tu póster ya lo lleva) -->
+    <!-- <h1 class="title"><span>YMC</span> <span>HALLOWEEN</span></h1> -->
+
+    <!-- Rótulo “FALTAN…” -->
+    <div class="faltan-wrap">
+      <img class="faltan" src="assets/img/faltan.png" alt="FALTAN…" />
+    </div>
+
+    <!-- Marco con 3 casillas + contador -->
+    <section class="counter-wrap">
+      <img class="marco" src="assets/img/marco-3cuadros.png" alt="" />
+      <!-- SOLO los números dentro del marco -->
+      <section id="countdown" aria-label="Cuenta regresiva">
+        <div class="ctr-grid" role="timer" aria-live="polite">
+          <div class="slot"><span id="dd">00</span></div>
+          <div class="slot"><span id="hh">00</span></div>
+          <div class="slot">
+            <span class="mmss"><b id="mm">00</b><i>:</i><b id="ss">00</b></span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- Redes (opcional) -->
+    <footer class="social">
+      <!-- <p>@YMC_ESSENCE x @PREVIOSTERRAZAS</p> -->
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
