@@ -28,87 +28,103 @@
   setInterval(update, 1000);
 })();
 
-// ===== Murciélagos: URL absoluta + precarga + inline =====
+// ===== Murciélagos con búsqueda de ruta robusta =====
 (function(){
   var wrap = document.getElementById("bats");
   if(!wrap) return;
 
-  // === DEBUG ===
-  var DEBUG = false; // pon true para ver un murciélago fijo con borde rojo
-
-  // Construir URL ABSOLUTA a /assets/img/bats.png bajo GitHub Pages
-  // Esto funciona tanto en raiz del dominio como en /usuario/REPO/
-  function absoluteUrl(relPath){
-    var base = location.origin + location.pathname;
-    // Si la ruta termina en archivo (index.html), quita el archivo
-    if (!base.endsWith("/")) base = base.replace(/\/[^\/]*$/, "/");
-    return base + relPath.replace(/^\/+/,"");
+  // Muestra un mensaje visible si algo falla
+  function showAlert(msg){
+    var box = document.createElement("div");
+    box.textContent = msg;
+    box.style.position = "fixed";
+    box.style.top = "8px";
+    box.style.left = "8px";
+    box.style.zIndex = "99999";
+    box.style.background = "rgba(180,0,0,.9)";
+    box.style.color = "#fff";
+    box.style.font = "14px/1.4 system-ui, sans-serif";
+    box.style.padding = "8px 10px";
+    box.style.borderRadius = "6px";
+    box.style.maxWidth = "90vw";
+    document.body.appendChild(box);
   }
-  var PNG_ABS = absoluteUrl("assets/img/bats.png") + "?v=" + Date.now();
 
-  function rand(a,b){ return a + Math.random()*(b-a); }
-
-  function spawn(){
-    wrap.innerHTML = "";
-
-    if (DEBUG){
-      var test = document.createElement("div");
-      test.className = "bat ltr";
-      test.style.backgroundImage = "url('"+PNG_ABS+"')";
-      test.style.top = "20vh";
-      test.style.width = "20vw";
-      test.style.opacity = "1";             // se ve ya
-      test.style.animation = "none";        // fijo
-      test.style.outline = "2px solid red"; // borde para confirmar
-      wrap.appendChild(test);
-      console.log("[DEBUG] Murciélago de prueba colocado con", PNG_ABS);
-      return;
+  // Construye URL absoluta desde una relativa (respeta /usuario/REPO/)
+  function abs(rel){
+    try {
+      // base = carpeta donde está index.html
+      var base = location.origin + location.pathname;
+      if (!base.endsWith("/")) base = base.replace(/\/[^\/]*$/, "/");
+      return new URL(rel.replace(/^\/+/, ""), base).toString();
+    } catch(e){
+      return rel; // fallback
     }
+  }
 
+  // Candidatos de ruta más comunes (con y sin carpeta, casos de mayúsculas/extensión)
+  var candidates = [
+    "assets/img/bats.png",
+    "assets/img/Bats.png",
+    "assets/img/bats.PNG",
+    "assets/Bats.png",
+    "assets/bats.png",
+    "bats.png",
+    "Bats.png",
+    "bats.PNG"
+  ].map(abs);
+
+  function tryLoad(urls, onSuccess, onFail){
+    if (!urls.length){ onFail(); return; }
+    var url = urls[0] + "?v=" + Date.now(); // rompe caché
+    var img = new Image();
+    img.onload = function(){ onSuccess(urls[0]); };
+    img.onerror = function(){ tryLoad(urls.slice(1), onSuccess, onFail); };
+    img.src = url;
+  }
+
+  function spawn(batsURL){
+    wrap.innerHTML = "";
     var N = 8;                 // cuántos grupos
     var durMin = 4.2, durMax = 6.0;
     var delaySpread = 1.6;
+
+    function rand(a,b){ return a + Math.random()*(b-a); }
 
     for(var i=0;i<N;i++){
       var el = document.createElement("div");
       var rtl = Math.random() < 0.5;
       el.className = "bat " + (rtl ? "rtl" : "ltr");
 
-      // URL inline (evita cualquier ruta vieja en CSS)
-      el.style.backgroundImage = "url('"+PNG_ABS+"')";
+      // Forzamos la imagen por inline (ignora lo que diga el CSS)
+      el.style.backgroundImage = "url('"+ batsURL +"?v="+Date.now()+"')";
 
-      // altura de vuelo
+      // altura y tiempos
       el.style.top = rand(10, 70).toFixed(1) + "vh";
-
-      // tiempos
       el.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
       el.style.animationDelay    = rand(0, delaySpread).toFixed(2) + "s";
 
-      // ancho moderado (no tocamos transform)
+      // tamaño normal (no tocamos transform)
       el.style.width = Math.round(rand(14, 22)) + "vw";
 
       wrap.appendChild(el);
     }
 
-    // limpieza tras terminar todo
+    // limpieza tras la animación
     var total = (durMax + delaySpread + 1.0) * 1000;
     setTimeout(function(){
       if(wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
     }, total);
   }
 
-  // Precarga del PNG y luego creamos los murciélagos
   window.addEventListener("load", function(){
-    var img = new Image();
-    img.onload = function(){
-      console.log("[OK] Cargó bats.png:", PNG_ABS);
-      spawn();
-    };
-    img.onerror = function(){
-      console.warn("[ERROR] No se pudo cargar bats.png en:", PNG_ABS);
-      // Igual intentamos spawnear (si falla, verás borde rojo en DEBUG)
-      spawn();
-    };
-    img.src = PNG_ABS;
+    tryLoad(candidates,
+      function(foundURL){
+        spawn(foundURL);
+      },
+      function(){
+        showAlert("No pude cargar bats.png en ninguna ruta común. Verifica que exista, con este nombre exacto, en assets/img/ o assets/. También revisa mayúsculas/minúsculas.");
+      }
+    );
   });
 })();
