@@ -3,7 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>YMC HALLOWEEN</title>
+
+  <!-- Barra del navegador oscura (Android + iOS) -->
+  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="dark light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -12,16 +21,17 @@
   <!-- Fondo ÚNICO (ya incluye “FALTAN…” y el marco) -->
   <div id="bg"></div>
 
-  <!-- SOLO NÚMEROS del contador, sobre el marco ya dibujado en la imagen -->
+  <!-- SOLO NÚMEROS del contador (DÍAS – HORAS – MIN) -->
   <section id="countdown" aria-label="Cuenta regresiva">
     <div class="ctr-grid" role="timer" aria-live="polite">
       <div class="slot"><span id="dd">00</span></div>
       <div class="slot"><span id="hh">00</span></div>
-      <div class="slot">
-        <span class="mmss"><b id="mm">00</b><i>:</i><b id="ss">00</b></span>
-      </div>
+      <div class="slot"><span id="mm">00</span></div>
     </div>
   </section>
+
+  <!-- Murciélagos al entrar -->
+  <div id="bat-swarm" aria-hidden="true"></div>
 
   <script src="app.js"></script>
 </body>
