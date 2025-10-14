@@ -1,5 +1,5 @@
 // ===== FECHA DEL EVENTO =====
-// 25 de ESTE mes a las 20:00 (hora local del dispositivo)
+// 25 de este mes a las 20:00 (hora local del dispositivo)
 (function(){
   const now = new Date();
   const year = now.getFullYear();
@@ -28,45 +28,37 @@
   }
 
   tick();
-  setInterval(tick, 1000); // actualiza cada segundo para que cambie el minuto exacto
+  setInterval(tick, 1000); // para que el minuto cambie exacto
 })();
 
-// ===== Murciélagos al entrar (SVG inline; sin data-URL) =====
+// ===== Murciélagos al entrar (usando tu PNG) =====
 (function batsOnLoad(){
   const swarm = document.getElementById("bat-swarm");
   if (!swarm) return;
 
-  const BATS = 12;
-  const durMin = 3.2, durMax = 5.4;
-  const delaySpread = 1.2;
-
-  const pathD = "M100 50c8-18 23-32 48-39 7 9 14 14 25 16-9 8-15 17-17 28 10-4 21-4 34 0-8 10-18 16-30 18 3 6 5 12 6 19-12-4-22-11-30-21-8 10-18 17-30 21 1-7 3-13 6-19-12-2-22-8-30-18 13-4 24-4 34 0-2-11-8-20-17-28 11-2 18-7 25-16 25 7 40 21 48 39-9 7-19 11-30 12-10 1-19 0-28-2-9 2-18 3-28 2-11-1-21-5-30-12z";
+  const GROUPS = 8;                   // cuántos grupos vuelan
+  const durMin = 3.6, durMax = 6.2;   // duración vuelo
+  const delaySpread = 1.6;            // dispersión de salida
 
   const rand = (a,b)=> a + Math.random()*(b-a);
 
-  for (let i = 0; i < BATS; i++){
-    const div = document.createElement("div");
-    div.className = "bat";
-    div.style.setProperty("--scale",  rand(.75, 1.35).toFixed(2));
-    div.style.setProperty("--rot",    `${rand(-12, 12).toFixed(1)}deg`);
-    div.style.setProperty("--y0",     `${rand(5, 85).toFixed(1)}vh`);
-    div.style.setProperty("--y1",     `${rand(5, 85).toFixed(1)}vh`);
-    div.style.setProperty("--dur",    `${rand(durMin, durMax).toFixed(2)}s`);
-    div.style.setProperty("--delay",  `${rand(0, delaySpread).toFixed(2)}s`);
+  for (let i=0; i<GROUPS; i++){
+    const bat = document.createElement("div");
+    bat.className = "bat";
+    if (Math.random() < 0.5) bat.classList.add("rtl"); // mitad a la inversa
 
-    // SVG inline (evita problemas de CSS con data-URLs)
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("viewBox", "0 0 200 110");
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("fill", "black");
-    path.setAttribute("d", pathD);
-    svg.appendChild(path);
+    // Variables por grupo
+    bat.style.setProperty("--scale",  rand(.55, 1.0).toFixed(2));
+    bat.style.setProperty("--rot",    `${rand(-8, 8).toFixed(1)}deg`);
+    bat.style.setProperty("--y0",     `${rand(8, 80).toFixed(1)}vh`);
+    bat.style.setProperty("--y1",     `${rand(8, 80).toFixed(1)}vh`);
+    bat.style.setProperty("--dur",    `${rand(durMin, durMax).toFixed(2)}s`);
+    bat.style.setProperty("--delay",  `${rand(0, delaySpread).toFixed(2)}s`);
 
-    div.appendChild(svg);
-    swarm.appendChild(div);
+    swarm.appendChild(bat);
   }
 
   // Limpia el DOM al terminar
-  const total = (durMax + delaySpread + 0.6) * 1000;
+  const total = (durMax + delaySpread + 0.8) * 1000;
   setTimeout(() => swarm.remove(), total);
 })();
