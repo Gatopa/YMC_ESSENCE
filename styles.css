@@ -1,64 +1,70 @@
 :root{
-  /* Ruta de TU ÚNICA imagen de fondo */
+  /* Ruta de tu única imagen de fondo */
   --bg-url: url("assets/img/fondo-poster.jpg");
 
   /* Área del contador (ajusta para encajar en tus 3 recuadros) */
   --ctr-top:    41.5%;
-  --ctr-left:   12.0%;
-  --ctr-right:  12.0%;
+  --ctr-left:   12%;
+  --ctr-right:  12%;
   --ctr-height: 10.8%;
 
-  /* Look dígitos */
+  /* Look de los dígitos */
   --txt:   #FFD37A;
   --glow:  rgba(255,165,60,.38);
   --shadow: rgba(0,0,0,.55);
 
-  /* Espaciado interno virtual */
+  /* Espaciado interno virtual entre casillas */
   --gap: 10px;
   --pad: 10px;
 }
 
-html,body{height:100%; margin:0; background:#000; color-scheme: dark;}
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #000;
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
 
 /* Fondo único */
 #bg{
-  position:fixed; inset:0;
+  position: fixed; inset: 0;
   background-image: var(--bg-url);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index:0;
+  z-index: 0;
 }
 
-/* Contador sobre el marco que ya está en la imagen */
+/* Contador sobre el marco que YA está en la imagen */
 #countdown{
-  position:fixed;
+  position: fixed;
   top: var(--ctr-top);
   left: var(--ctr-left);
   right: var(--ctr-right);
   height: var(--ctr-height);
   z-index: 5;
-  pointer-events:none;
-  display:flex; align-items:center;
+  pointer-events: none;
+  display: flex; align-items: center;
 }
 
 .ctr-grid{
-  width:100%; height:100%;
-  display:grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 recuadros visuales */
   gap: var(--gap);
-  align-items:center;
+  align-items: center;
 }
 
 .slot{
-  display:flex; align-items:center; justify-content:center;
+  display: flex; align-items: center; justify-content: center;
   padding: var(--pad);
 }
 
 .slot span{
-  font-family:"Cinzel","Playfair Display",Georgia,serif;
+  font-family: "Cinzel","Playfair Display", Georgia, serif;
   font-variant-numeric: tabular-nums;
-  font-weight:700; letter-spacing:.5px; line-height:1;
+  font-weight: 700; letter-spacing: .5px; line-height: 1;
   font-size: clamp(26px, 6.5vw, 54px);
   color: var(--txt);
   text-shadow:
@@ -68,46 +74,45 @@ html,body{height:100%; margin:0; background:#000; color-scheme: dark;}
   filter: drop-shadow(0 2px 6px var(--shadow));
 }
 
-/* ===== Murciélagos on load ===== */
+/* Murciélagos (sin data-URL; el SVG lo inyecta JS) */
 #bat-swarm{
-  position:fixed; inset:0;
-  pointer-events:none; z-index:9999;
-  overflow:hidden;
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  overflow: hidden;
 }
 .bat{
-  position:absolute;
+  position: absolute;
   width: clamp(28px, 5vw, 56px);
-  aspect-ratio: 1.8 / 1;
-  background:
-    url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 110'>\
-  <path fill='black' d='M100 50c8-18 23-32 48-39 7 9 14 14 25 16-9 8-15 17-17 28 10-4 21-4 34 0-8 10-18 16-30 18 3 6 5 12 6 19-12-4-22-11-30-21-8 10-18 17-30 21 1-7 3-13 6-19-12-2-22-8-30-18 13-4 24-4 34 0-2-11-8-20-17-28 11-2 18-7 25-16 25 7 40 21 48 39-9 7-19 11-30 12-10 1-19 0-28-2-9 2-18 3-28 2-11-1-21-5-30-12z'/>\
-</svg>") center/contain no-repeat;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,.35));
   opacity: 0;
-  transform: translateX(-10vw) translateY(var(--y0)) scale(var(--scale))
-             rotate(var(--rot));
+  transform: translateX(-10vw) translateY(var(--y0)) scale(var(--scale)) rotate(var(--rot));
   animation:
-    bat-fly var(--dur,4s) var(--ease, cubic-bezier(.2,.7,.2,1)) forwards,
+    bat-fly var(--dur, 4s) cubic-bezier(.2,.7,.2,1) forwards,
     bat-flap .28s ease-in-out infinite alternate;
   animation-delay: var(--delay, 0s);
 }
-@keyframes bat-fly{
-  0%   { opacity:.0; transform: translateX(-12vw) translateY(var(--y0)) scale(var(--scale)) rotate(var(--rot)); }
-  8%   { opacity:.85; }
-  70%  { opacity:.85; transform: translateX(60vw) translateY(var(--y1)) scale(var(--scale)) rotate(calc(var(--rot) * -1)); }
-  100% { opacity:0; transform: translateX(110vw) translateY(calc(var(--y1) + 3vh)) scale(var(--scale)) rotate(0deg); }
-}
-@keyframes bat-flap{
-  from { transform: translateX(var(--tx,0)) translateY(var(--ycur,0)) scaleX(var(--scale)) scaleY(calc(var(--scale) * .80)) rotate(var(--rot)); }
-  to   { transform: translateX(var(--tx,0)) translateY(var(--ycur,0)) scaleX(var(--scale)) scaleY(calc(var(--scale) * 1.10)) rotate(var(--rot)); }
+.bat svg{
+  width: 100%; height: auto; display: block;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.35));
 }
 
+/* Trayectoria + aleteo */
+@keyframes bat-fly{
+  0%   { opacity: 0; transform: translateX(-12vw) translateY(var(--y0)) scale(var(--scale)) rotate(var(--rot)); }
+  8%   { opacity: .85; }
+  70%  { opacity: .85; transform: translateX(60vw) translateY(var(--y1)) scale(var(--scale)) rotate(calc(-1 * var(--rot))); }
+  100% { opacity: 0; transform: translateX(110vw) translateY(calc(var(--y1) + 3vh)) scale(var(--scale)) rotate(0deg); }
+}
+@keyframes bat-flap{
+  from { transform: translateX(0) translateY(0) scaleX(var(--scale)) scaleY(calc(var(--scale) * .85)) rotate(var(--rot)); }
+  to   { transform: translateX(0) translateY(0) scaleX(var(--scale)) scaleY(calc(var(--scale) * 1.08)) rotate(var(--rot)); }
+}
+
+/* Respeto a reduce-motion */
 @media (prefers-reduced-motion: reduce){
   #bat-swarm{ display:none !important; }
 }
 
-/* Ajustes móviles si hace falta */
+/* Ajustes móviles opcionales */
 @media (max-width: 480px){
   :root{ --gap: 8px; --pad: 8px; }
 }
