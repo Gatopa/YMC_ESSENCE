@@ -1,122 +1,124 @@
-:root{
-  /* Rutas */
-  --bg-url: url("assets/img/fondo-poster.jpg");
-  --bats-url: url("assets/img/bats.png");
-
-  /* Posición / tamaño del bloque del contador */
-  --ctr-top: 41.5%;
-  --ctr-left: 12%;
-  --ctr-right: 12%;
-  --ctr-height: 10.8%;
-
-  /* Estilo dígitos */
-  --txt: #FFD37A;
-  --glow: rgba(255,165,60,0.38);
-
-  /* Espaciado virtual entre las 3 celdas */
-  --gap: 10px;
-  --pad: 10px;
-}
-
-html, body{
-  height:100%;
-  margin:0;
-  background:#000;
+/* ===== Base ===== */
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #000;
   color-scheme: dark;
+  font-family: Georgia, serif;
 }
 
+/* ===== Fondo único ===== */
 #bg{
-  position:fixed;
-  inset:0;
-  background-image: var(--bg-url);
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("assets/img/fondo-poster.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index:0;
+  z-index: 0;
 }
 
-/* ===== CONTADOR ===== */
+/* ===== Contador (DÍAS – HORAS – MIN) ===== */
+/* Ajusta estos 4 valores si los números no caen exactos dentro del marco */
 #countdown{
-  position:fixed;
-  top: var(--ctr-top);
-  left: var(--ctr-left);
-  right: var(--ctr-right);
-  height: var(--ctr-height);
-  z-index:5;
-  display:flex;
-  align-items:center;
-  pointer-events:none;
+  position: fixed;
+  top: 41.5%;      /* subir/bajar */
+  left: 12%;       /* mover a la derecha si bajas este % */
+  right: 12%;      /* mover a la izquierda si subes este % */
+  height: 10.8%;   /* más alto o más bajo el bloque */
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
 }
+
 #countdown .grid{
-  width:100%;
-  height:100%;
-  display:grid;
+  width: 100%;
+  height: 100%;
+  display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--gap);
-  align-items:center;
+  gap: 10px;
+  align-items: center;
 }
+
 #countdown .cell{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: var(--pad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
 }
+
 #countdown .cell span{
-  font-family: Georgia, serif;
-  font-weight:700;
-  letter-spacing:.5px;
-  line-height:1;
-  font-size: clamp(26px, 6.5vw, 54px);
-  color: var(--txt);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  color: #FFD37A;
   text-shadow:
-    0 0 10px var(--glow),
-    0 0 22px var(--glow),
-    0 1px 0 rgba(0,0,0,.25);
+    0 0 10px rgba(255,165,60,0.38),
+    0 0 22px rgba(255,165,60,0.38),
+    0 1px 0 rgba(0,0,0,0.25);
+  /* Tamaño responsivo sencillo (sin clamp) */
+  font-size: 6.2vw;
 }
 
-/* ===== MURCIÉLAGOS (PNG en grupos) ===== */
+@media (min-width: 1200px){
+  #countdown .cell span{ font-size: 54px; }
+}
+@media (max-width: 420px){
+  #countdown .cell span{ font-size: 26px; }
+}
+
+/* ===== Murciélagos (PNG en grupos, animación robusta) ===== */
 #bats{
-  position:fixed;
-  inset:0;
-  z-index:999;
-  pointer-events:none;
-  overflow:hidden;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 999;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-/* AÚN MÁS GRANDES AQUÍ */
+/* Cada grupo de murciélagos (PNG) vuela de lado a lado */
 .bat{
-  position:absolute;
-  width: clamp(260px, 28vw, 520px);  /* antes: 180–360 */
+  position: absolute;
+  /* MUCHO más grandes por defecto; ajusta si quieres aún más */
+  width: 34vw;              /* tamaño principal relativo a pantalla */
+  max-width: 640px;         /* tope grande */
+  min-width: 320px;         /* mínimo */
   height: auto;
-  background-image: var(--bats-url);
+
+  background-image: url("assets/img/bats.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  opacity:0;
-  transform: translateX(-20vw) translateY(var(--y)) scale(var(--s)) rotate(var(--r));
-  animation: fly var(--t) ease-in-out forwards;
-  animation-delay: var(--d);
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,.35));
-}
-.bat.rtl{
-  transform: translateX(120vw) translateY(var(--y)) scale(var(--s)) rotate(calc(-1 * var(--r)));
-  animation-name: fly-rtl;
+
+  opacity: 0;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
 }
 
-@keyframes fly{
-  0%   { opacity:0; }
-  10%  { opacity:.9; }
-  70%  { opacity:.9; transform: translateX(55vw) translateY(var(--y2)) scale(var(--s)) rotate(calc(-1 * var(--r))); }
-  100% { opacity:0; transform: translateX(120vw) translateY(calc(var(--y2) + 4vh)) scale(var(--s)) rotate(0deg); }
+/* Dirección izquierda -> derecha */
+.bat.ltr{
+  left: 0; top: 0;
+  transform: translateX(-120vw);
+  animation: fly-ltr 5s ease-in-out forwards;
+}
+
+/* Dirección derecha -> izquierda */
+.bat.rtl{
+  right: 0; top: 0;
+  transform: translateX(120vw);
+  animation: fly-rtl 5s ease-in-out forwards;
+}
+
+/* Keyframes sin variables ni calc complicados */
+@keyframes fly-ltr{
+  0%   { opacity: 0; transform: translateX(-120vw); }
+  10%  { opacity: 0.95; }
+  70%  { opacity: 0.95; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(120vw); }
 }
 @keyframes fly-rtl{
-  0%   { opacity:0; }
-  10%  { opacity:.9; }
-  70%  { opacity:.9; transform: translateX(-55vw) translateY(var(--y2)) scale(var(--s)) rotate(var(--r)); }
-  100% { opacity:0; transform: translateX(-120vw) translateY(calc(var(--y2) + 4vh)) scale(var(--s)) rotate(0deg); }
-}
-
-/* Móvil */
-@media (max-width:480px){
-  :root{ --gap:8px; --pad:8px; }
+  0%   { opacity: 0; transform: translateX(120vw); }
+  10%  { opacity: 0.95; }
+  70%  { opacity: 0.95; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(-120vw); }
 }
