@@ -1,131 +1,102 @@
+/* ===== Config ===== */
 :root{
-  /* ÚNICA imagen de fondo de toda la página */
+  /* Ruta del ÚNICO fondo */
   --bg-url: url("assets/img/fondo-poster.jpg");
 
-  /* PNG de murciélagos (grupos en silueta, fondo transparente) */
-  --bat-url: url("assets/img/bats.png");
+  /* Ruta de tus murciélagos PNG (fondo transparente) */
+  --bats-url: url("assets/img/bats.png");
 
-  /* Área del contador (ajusta para encajar en tus 3 recuadros del marco) */
-  --ctr-top:    41.5%;
-  --ctr-left:   12%;
-  --ctr-right:  12%;
+  /* Área donde van los números, en % del viewport */
+  --ctr-top: 41.5%;
+  --ctr-left: 12%;
+  --ctr-right: 12%;
   --ctr-height: 10.8%;
 
-  /* Look de los dígitos */
-  --txt:   #FFD37A;
-  --glow:  rgba(255,165,60,.38);
-  --shadow: rgba(0,0,0,.55);
+  /* Estilo números */
+  --txt: #FFD37A;
+  --glow: rgba(255,165,60,0.38);
 
-  /* Espaciado interno virtual entre casillas del grid */
+  /* Espaciado entre las 3 celdas virtuales */
   --gap: 10px;
   --pad: 10px;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  background: #000;
-  color-scheme: dark;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
+/* ===== Base ===== */
+html, body { height:100%; margin:0; background:#000; color-scheme:dark; }
+* { box-sizing:border-box; }
 
 /* Fondo único */
 #bg{
-  position: fixed; inset: 0;
+  position:fixed; inset:0;
   background-image: var(--bg-url);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 0;
+  z-index:0;
 }
 
-/* Contador sobre el marco que YA está dibujado en la imagen */
+/* Contador encima del marco dibujado en la imagen */
 #countdown{
-  position: fixed;
+  position:fixed;
   top: var(--ctr-top);
   left: var(--ctr-left);
   right: var(--ctr-right);
   height: var(--ctr-height);
-  z-index: 5;
-  pointer-events: none;
-  display: flex; align-items: center;
+  z-index:5;
+  display:flex; align-items:center;
+  pointer-events:none;
 }
-
-.ctr-grid{
-  width: 100%; height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--gap);
-  align-items: center;
+#countdown .grid{
+  width:100%; height:100%;
+  display:grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--gap); align-items:center;
 }
-.slot{
-  display: flex; align-items: center; justify-content: center;
+#countdown .cell{
+  display:flex; align-items:center; justify-content:center;
   padding: var(--pad);
 }
-.slot span{
-  font-family: "Cinzel","Playfair Display", Georgia, serif;
-  font-variant-numeric: tabular-nums;
-  font-weight: 700; letter-spacing: .5px; line-height: 1;
+#countdown .cell span{
+  font-family: Georgia, serif;
+  font-weight:700; letter-spacing:.5px; line-height:1;
   font-size: clamp(26px, 6.5vw, 54px);
   color: var(--txt);
-  text-shadow:
-    0 0 10px var(--glow),
-    0 0 22px var(--glow),
-    0 1px 0 rgba(0,0,0,.25);
-  filter: drop-shadow(0 2px 6px var(--shadow));
+  text-shadow: 0 0 10px var(--glow), 0 0 22px var(--glow), 0 1px 0 rgba(0,0,0,.25);
 }
 
-/* ===== Murciélagos (usando tu PNG como "grupo") ===== */
-#bat-swarm{
-  position: fixed; inset: 0;
-  pointer-events: none; z-index: 9999;
-  overflow: hidden;
-}
-
-/* Cada .bat es un "grupo" que cruza la pantalla */
+/* ===== Murciélagos muy simples: grupos que cruzan y se desvanecen ===== */
+#bats{ position:fixed; inset:0; z-index:999; pointer-events:none; overflow:hidden; }
 .bat{
-  position: absolute;
-  width: clamp(120px, 16vw, 260px);   /* tamaño del grupo */
-  height: auto;
-  background-image: var(--bat-url);
+  position:absolute;
+  width: clamp(120px, 16vw, 260px);
+  height: clamp(90px, 12vw, 180px);
+  background-image: var(--bats-url);
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
-  opacity: 0;
-  transform: translateX(-15vw) translateY(var(--y0)) scale(var(--scale)) rotate(var(--rot));
-  animation: bat-fly var(--dur, 4.8s) cubic-bezier(.2,.7,.2,1) forwards;
-  animation-delay: var(--delay, 0s);
+  opacity:0;
+  transform: translateX(-20vw) translateY(var(--y)) scale(var(--s)) rotate(var(--r));
+  animation: fly var(--t) ease-in-out forwards;
+  animation-delay: var(--d);
   filter: drop-shadow(0 3px 4px rgba(0,0,0,.35));
 }
-
-/* Dos direcciones posibles: L->R y R->L */
 .bat.rtl{
-  transform: translateX(115vw) translateY(var(--y0)) scale(var(--scale)) rotate(calc(-1 * var(--rot)));
+  transform: translateX(120vw) translateY(var(--y)) scale(var(--s)) rotate(calc(-1 * var(--r)));
+  animation-name: fly-rtl;
+}
+@keyframes fly{
+  0%   { opacity:0; }
+  10%  { opacity:.9; }
+  70%  { opacity:.9; transform: translateX(55vw) translateY(var(--y2)) scale(var(--s)) rotate(calc(-1 * var(--r))); }
+  100% { opacity:0; transform: translateX(120vw) translateY(calc(var(--y2) + 4vh)) scale(var(--s)) rotate(0deg); }
+}
+@keyframes fly-rtl{
+  0%   { opacity:0; }
+  10%  { opacity:.9; }
+  70%  { opacity:.9; transform: translateX(-55vw) translateY(var(--y2)) scale(var(--s)) rotate(var(--r)); }
+  100% { opacity:0; transform: translateX(-120vw) translateY(calc(var(--y2) + 4vh)) scale(var(--s)) rotate(0deg); }
 }
 
-/* Trayectorias y desvanecido */
-@keyframes bat-fly{
-  0%   { opacity: 0; }
-  10%  { opacity: .85; }
-  70%  { opacity: .85; transform: translateX(55vw) translateY(var(--y1)) scale(var(--scale)) rotate(calc(-1 * var(--rot))); }
-  100% { opacity: 0;   transform: translateX(115vw) translateY(calc(var(--y1) + 4vh)) scale(var(--scale)) rotate(0deg); }
-}
-@keyframes bat-fly-rtl{
-  0%   { opacity: 0; }
-  10%  { opacity: .85; }
-  70%  { opacity: .85; transform: translateX(-55vw) translateY(var(--y1)) scale(var(--scale)) rotate(var(--rot)); }
-  100% { opacity: 0;   transform: translateX(-115vw) translateY(calc(var(--y1) + 4vh)) scale(var(--scale)) rotate(0deg); }
-}
-
-/* Aplica la animación contraria si es .rtl */
-.bat.rtl{ animation-name: bat-fly-rtl; }
-
-/* Respeta reduce-motion */
-@media (prefers-reduced-motion: reduce){
-  #bat-swarm{ display:none !important; }
-}
-
-/* Móvil: si hace falta, ajusta gap/padding */
-@media (max-width: 480px){
-  :root{ --gap: 8px; --pad: 8px; }
+/* Móvil */
+@media (max-width:480px){
+  :root{ --gap:8px; --pad:8px; }
 }
