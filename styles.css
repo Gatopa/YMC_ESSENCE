@@ -1,33 +1,32 @@
-/* ===== Config ===== */
 :root{
-  /* Ruta del ÚNICO fondo */
   --bg-url: url("assets/img/fondo-poster.jpg");
-
-  /* Ruta de tus murciélagos PNG (fondo transparente) */
   --bats-url: url("assets/img/bats.png");
 
-  /* Área donde van los números, en % del viewport */
+  /* Posición y tamaño del bloque del contador (ajústalo si hace falta) */
   --ctr-top: 41.5%;
   --ctr-left: 12%;
   --ctr-right: 12%;
   --ctr-height: 10.8%;
 
-  /* Estilo números */
+  /* Estilo de dígitos */
   --txt: #FFD37A;
   --glow: rgba(255,165,60,0.38);
 
-  /* Espaciado entre las 3 celdas virtuales */
+  /* Espaciado interno virtual entre las 3 celdas */
   --gap: 10px;
   --pad: 10px;
 }
 
-/* ===== Base ===== */
-html, body { height:100%; margin:0; background:#000; color-scheme:dark; }
-* { box-sizing:border-box; }
+html, body{
+  height:100%;
+  margin:0;
+  background:#000;
+  color-scheme: dark;
+}
 
-/* Fondo único */
 #bg{
-  position:fixed; inset:0;
+  position:fixed;
+  inset:0;
   background-image: var(--bg-url);
   background-size: cover;
   background-position: center;
@@ -35,7 +34,7 @@ html, body { height:100%; margin:0; background:#000; color-scheme:dark; }
   z-index:0;
 }
 
-/* Contador encima del marco dibujado en la imagen */
+/* CONTADOR (DÍAS–HORAS–MIN) */
 #countdown{
   position:fixed;
   top: var(--ctr-top);
@@ -43,33 +42,48 @@ html, body { height:100%; margin:0; background:#000; color-scheme:dark; }
   right: var(--ctr-right);
   height: var(--ctr-height);
   z-index:5;
-  display:flex; align-items:center;
+  display:flex;
+  align-items:center;
   pointer-events:none;
 }
 #countdown .grid{
-  width:100%; height:100%;
-  display:grid; grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--gap); align-items:center;
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--gap);
+  align-items:center;
 }
 #countdown .cell{
-  display:flex; align-items:center; justify-content:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   padding: var(--pad);
 }
 #countdown .cell span{
   font-family: Georgia, serif;
-  font-weight:700; letter-spacing:.5px; line-height:1;
+  font-weight:700;
+  letter-spacing:.5px;
+  line-height:1;
   font-size: clamp(26px, 6.5vw, 54px);
   color: var(--txt);
-  text-shadow: 0 0 10px var(--glow), 0 0 22px var(--glow), 0 1px 0 rgba(0,0,0,.25);
+  text-shadow:
+    0 0 10px var(--glow),
+    0 0 22px var(--glow),
+    0 1px 0 rgba(0,0,0,.25);
 }
 
-/* ===== Murciélagos: grupos que cruzan y se desvanecen ===== */
-#bats{ position:fixed; inset:0; z-index:999; pointer-events:none; overflow:hidden; }
-
-/* AUMENTÉ el tamaño por defecto aquí */
+/* MURCIÉLAGOS (PNG en grupos) */
+#bats{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  pointer-events:none;
+  overflow:hidden;
+}
 .bat{
   position:absolute;
-  width: clamp(180px, 22vw, 360px);   /* antes: 120–260; ahora: 180–360 */
+  width: clamp(180px, 22vw, 360px);
   height: auto;
   background-image: var(--bats-url);
   background-size: contain;
@@ -85,6 +99,7 @@ html, body { height:100%; margin:0; background:#000; color-scheme:dark; }
   transform: translateX(120vw) translateY(var(--y)) scale(var(--s)) rotate(calc(-1 * var(--r)));
   animation-name: fly-rtl;
 }
+
 @keyframes fly{
   0%   { opacity:0; }
   10%  { opacity:.9; }
@@ -98,7 +113,7 @@ html, body { height:100%; margin:0; background:#000; color-scheme:dark; }
   100% { opacity:0; transform: translateX(-120vw) translateY(calc(var(--y2) + 4vh)) scale(var(--s)) rotate(0deg); }
 }
 
-/* Móvil */
+/* Móvil (si necesitas apretar un poco los números) */
 @media (max-width:480px){
   :root{ --gap:8px; --pad:8px; }
 }
