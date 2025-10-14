@@ -63,12 +63,14 @@ html, body { height:100%; margin:0; background:#000; color-scheme:dark; }
   text-shadow: 0 0 10px var(--glow), 0 0 22px var(--glow), 0 1px 0 rgba(0,0,0,.25);
 }
 
-/* ===== Murciélagos muy simples: grupos que cruzan y se desvanecen ===== */
+/* ===== Murciélagos: grupos que cruzan y se desvanecen ===== */
 #bats{ position:fixed; inset:0; z-index:999; pointer-events:none; overflow:hidden; }
+
+/* AUMENTÉ el tamaño por defecto aquí */
 .bat{
   position:absolute;
-  width: clamp(120px, 16vw, 260px);
-  height: clamp(90px, 12vw, 180px);
+  width: clamp(180px, 22vw, 360px);   /* antes: 120–260; ahora: 180–360 */
+  height: auto;
   background-image: var(--bats-url);
   background-size: contain;
   background-repeat: no-repeat;
