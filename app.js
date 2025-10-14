@@ -43,7 +43,8 @@
     const el = document.createElement("div");
     el.className = "bat";
     if(Math.random()<0.5) el.classList.add("rtl");
-    el.style.setProperty("--s", rand(.55,1).toFixed(2));
+    // AUMENTÉ la escala para algunos grupos
+    el.style.setProperty("--s", rand(0.8, 1.4).toFixed(2));  // antes .55–1.0
     el.style.setProperty("--r", `${rand(-8,8).toFixed(1)}deg`);
     el.style.setProperty("--y",  `${rand(10,80).toFixed(1)}vh`);
     el.style.setProperty("--y2", `${rand(10,80).toFixed(1)}vh`);
