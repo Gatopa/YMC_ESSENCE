@@ -28,36 +28,37 @@
   setInterval(update, 1000);
 })();
 
-// ===== Murciélagos (tamaño normal, sin tocar transform) =====
+// ===== Murciélagos: de ABAJO hacia ARRIBA, algunos a izq y otros a der =====
 (function(){
   var wrap = document.getElementById("bats");
   if(!wrap) return;
 
   var N = 8;                 // cuántos grupos
-  var durMin = 4.2, durMax = 6.0;
+  var durMin = 4.2, durMax = 6.2;
   var delaySpread = 1.6;
 
   function rand(a,b){ return a + Math.random()*(b-a); }
 
   for(var i=0;i<N;i++){
     var el = document.createElement("div");
-    var rtl = Math.random() < 0.5;
-    el.className = "bat " + (rtl ? "rtl" : "ltr");
+    // 50% suben derivando a la izquierda, 50% a la derecha
+    var goRight = Math.random() < 0.5;
+    el.className = "bat " + (goRight ? "up-right" : "up-left");
 
-    // Altura de vuelo
-    el.style.top = rand(10, 70).toFixed(1) + "vh";
+    // Punto de partida horizontal (en la base). Puedes centrar más si quieres: rand(40,60)
+    el.style.left = rand(20, 80).toFixed(1) + "vw";
 
-    // Tiempos
+    // Duración / retraso (NO tocamos transform)
     el.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
     el.style.animationDelay    = rand(0, delaySpread).toFixed(2) + "s";
 
-    // Variación leve de ancho (la altura se calcula por aspect-ratio)
+    // Variación leve de ancho (alto se calcula por aspect-ratio)
     el.style.width = Math.round(rand(14, 22)) + "vw";
 
     wrap.appendChild(el);
   }
 
-  // Limpia el DOM al terminar
+  // Limpia el DOM después de las animaciones
   var total = (durMax + delaySpread + 1.0) * 1000;
   setTimeout(function(){
     if(wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
