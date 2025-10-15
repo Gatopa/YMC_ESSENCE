@@ -15,8 +15,7 @@ html,body{height:100%;margin:0;background:#000;font-family:Georgia,serif}
   z-index:5;display:flex;align-items:center;pointer-events:none
 }
 #countdown .grid{
-  width:100%;height:100%;
-  display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:center
+  width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:center
 }
 #countdown .cell{display:flex;align-items:center;justify-content:center;padding:10px}
 #countdown .cell span{
@@ -33,7 +32,7 @@ html,body{height:100%;margin:0;background:#000;font-family:Georgia,serif}
   z-index:999;pointer-events:none;overflow:hidden
 }
 
-/* Caja del murciélago con altura por proporción (3200/3182 ≈ 100.566%) */
+/* Caja del murciélago (altura por proporción 3200/3182 ≈ 100.566%) */
 .bat{
   position:absolute;
   width:18vw;max-width:360px;min-width:120px;
@@ -43,24 +42,63 @@ html,body{height:100%;margin:0;background:#000;font-family:Georgia,serif}
 }
 .bat::before{content:"";display:block;padding-top:100.566%}
 
-/* Trayectorias: desde ABAJO hacia ARRIBA con deriva izquierda/derecha */
+/* Centro abajo + apertura izquierda/derecha */
+.bat.centered{left:50%;top:0}
 .bat.up-left{
-  left:0;top:0;transform:translateY(120vh);
+  transform:translate(-50%,120vh) translateX(0);
   animation:rise-left 5.2s ease-in-out forwards
 }
 .bat.up-right{
-  left:0;top:0;transform:translateY(120vh);
+  transform:translate(-50%,120vh) translateX(0);
   animation:rise-right 5.2s ease-in-out forwards
 }
 @keyframes rise-left{
-  0%{opacity:0;transform:translateY(120vh) translateX(0)}
-  12%{opacity:.95}
-  70%{opacity:.95;transform:translateY(30vh) translateX(-12vw)}
-  100%{opacity:0;transform:translateY(-20vh) translateX(-24vw)}
+  0%  {opacity:0;   transform:translate(-50%,120vh) translateX(0)}
+  12% {opacity:.95}
+  70% {opacity:.95; transform:translate(-50%,30vh)  translateX(-12vw)}
+  100%{opacity:0;   transform:translate(-50%,-20vh) translateX(-24vw)}
 }
 @keyframes rise-right{
-  0%{opacity:0;transform:translateY(120vh) translateX(0)}
-  12%{opacity:.95}
-  70%{opacity:.95;transform:translateY(30vh) translateX(12vw)}
-  100%{opacity:0;transform:translateY(-20vh) translateX(24vw)}
+  0%  {opacity:0;   transform:translate(-50%,120vh) translateX(0)}
+  12% {opacity:.95}
+  70% {opacity:.95; transform:translate(-50%,30vh)  translateX(12vw)}
+  100%{opacity:0;   transform:translate(-50%,-20vh) translateX(24vw)}
+}
+
+/* ===== Botón de ubicación ===== */
+.loc-btn{
+  position:fixed;
+  top:58.5%;           /* ajusta según tu diseño */
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1001;pointer-events:auto;
+
+  display:inline-flex;align-items:center;gap:10px;
+  padding:12px 18px;border-radius:999px;
+
+  background:rgba(0,0,0,.6);
+  border:1px solid rgba(255,211,122,.55);
+  color:#FFD37A;text-decoration:none;
+  font:600 14px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  letter-spacing:.3px;
+
+  box-shadow:
+    0 0 10px rgba(255,165,60,.35),
+    0 0 22px rgba(255,165,60,.25),
+    inset 0 0 12px rgba(255,165,60,.12);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
+  transition: transform .15s ease, box-shadow .2s ease, background .2s ease
+}
+.loc-btn:hover{transform:translateX(-50%) scale(1.03)}
+.loc-btn:active{transform:translateX(-50%) scale(.98)}
+.loc-btn .pin{font-size:18px;line-height:1}
+.loc-btn .txt{margin-top:1px}
+
+/* Hotspot invisible (si prefieres no mostrar el botón visible)
+   — usa class="loc-btn loc-btn--invisible" en el <a> */
+.loc-btn.loc-btn--invisible{
+  background:transparent;border:0;box-shadow:none;color:transparent;gap:0;padding:0;
+  width:46vw;height:7vh; /* ajusta para calzar con tu recuadro de “ubicación” */
 }
