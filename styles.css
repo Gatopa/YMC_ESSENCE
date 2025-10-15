@@ -42,33 +42,35 @@ html,body{height:100%;margin:0;background:#000;font-family:Georgia,serif}
 }
 .bat::before{content:"";display:block;padding-top:100.566%}
 
-/* Centro abajo + apertura izquierda/derecha */
+/* Centro abajo como base */
 .bat.centered{left:50%;top:0}
+
+/* Apertura izquierda/derecha (rápida y lineal) */
 .bat.up-left{
-  transform:translate(-50%,120vh) translateX(0);
-  animation:rise-left 5.2s ease-in-out forwards
+  transform:translate(-50%,110vh);
+  animation:zoom-left 1.4s linear forwards
 }
 .bat.up-right{
-  transform:translate(-50%,120vh) translateX(0);
-  animation:rise-right 5.2s ease-in-out forwards
+  transform:translate(-50%,110vh);
+  animation:zoom-right 1.4s linear forwards
 }
-@keyframes rise-left{
-  0%  {opacity:0;   transform:translate(-50%,120vh) translateX(0)}
-  12% {opacity:.95}
-  70% {opacity:.95; transform:translate(-50%,30vh)  translateX(-12vw)}
-  100%{opacity:0;   transform:translate(-50%,-20vh) translateX(-24vw)}
+
+/* KEYFRAMES: sin “poses”, van de abajo a arriba con deriva y ya */
+@keyframes zoom-left{
+  0%   {opacity:0; transform:translate(-50%,110vh) translateX(0)}
+  8%   {opacity:1}
+  100% {opacity:0; transform:translate(-50%,-20vh) translateX(-26vw)}
 }
-@keyframes rise-right{
-  0%  {opacity:0;   transform:translate(-50%,120vh) translateX(0)}
-  12% {opacity:.95}
-  70% {opacity:.95; transform:translate(-50%,30vh)  translateX(12vw)}
-  100%{opacity:0;   transform:translate(-50%,-20vh) translateX(24vw)}
+@keyframes zoom-right{
+  0%   {opacity:0; transform:translate(-50%,110vh) translateX(0)}
+  8%   {opacity:1}
+  100% {opacity:0; transform:translate(-50%,-20vh) translateX(26vw)}
 }
 
 /* ===== Botón de ubicación ===== */
 .loc-btn{
   position:fixed;
-  top:58.5%;           /* ajusta según tu diseño */
+  top:58.5%;
   left:50%;
   transform:translateX(-50%);
   z-index:1001;pointer-events:auto;
@@ -96,9 +98,8 @@ html,body{height:100%;margin:0;background:#000;font-family:Georgia,serif}
 .loc-btn .pin{font-size:18px;line-height:1}
 .loc-btn .txt{margin-top:1px}
 
-/* Hotspot invisible (si prefieres no mostrar el botón visible)
-   — usa class="loc-btn loc-btn--invisible" en el <a> */
+/* Hotspot invisible (opcional) */
 .loc-btn.loc-btn--invisible{
   background:transparent;border:0;box-shadow:none;color:transparent;gap:0;padding:0;
-  width:46vw;height:7vh; /* ajusta para calzar con tu recuadro de “ubicación” */
+  width:46vw;height:7vh;
 }
