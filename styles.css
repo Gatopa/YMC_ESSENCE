@@ -46,15 +46,14 @@ html, body{
 .bat{
   position:absolute;
 
-  /* ancho base “normal” (puedes subirlo/bajarlo) */
+  /* tamaño base */
   width:18vw;
   max-width:360px;
   min-width:120px;
 
-  /* Altura automática basada en la resolución real del PNG (ancho/alto) */
+  /* altura automática según tu PNG (ancho/alto) */
   aspect-ratio: 3182 / 3200;
 
-  /* Imagen */
   background-image:url("assets/img/bats.png");
   background-size:contain; background-repeat:no-repeat; background-position:center;
 
@@ -62,26 +61,28 @@ html, body{
   filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));
 }
 
-/* Animación izquierda→derecha y derecha→izquierda */
-.bat.ltr{
-  left:0; top:0;
-  transform:translateX(-120vw);
-  animation:fly-ltr 5s ease-in-out forwards;
+/* NUEVO: salen desde ABAJO y suben, con deriva a izquierda/derecha */
+.bat.up-left{
+  top:0;                 /* usaremos transform para subir desde abajo */
+  transform: translateY(120vh);
+  animation: rise-left 5.2s ease-in-out forwards;
 }
-.bat.rtl{
-  right:0; top:0;
-  transform:translateX(120vw);
-  animation:fly-rtl 5s ease-in-out forwards;
+.bat.up-right{
+  top:0;
+  transform: translateY(120vh);
+  animation: rise-right 5.2s ease-in-out forwards;
 }
-@keyframes fly-ltr{
-  0%{opacity:0; transform:translateX(-120vw)}
-  10%{opacity:.95}
-  70%{opacity:.95; transform:translateX(0)}
-  100%{opacity:0; transform:translateX(120vw)}
+
+/* Trayectorias: vertical ↑ + deriva horizontal */
+@keyframes rise-left{
+  0%   { opacity:0;   transform: translateY(120vh) translateX(0); }
+  12%  { opacity:.95; }
+  70%  { opacity:.95; transform: translateY(30vh) translateX(-12vw); }
+  100% { opacity:0;   transform: translateY(-20vh) translateX(-24vw); }
 }
-@keyframes fly-rtl{
-  0%{opacity:0; transform:translateX(120vw)}
-  10%{opacity:.95}
-  70%{opacity:.95; transform:translateX(0)}
-  100%{opacity:0; transform:translateX(-120vw)}
+@keyframes rise-right{
+  0%   { opacity:0;   transform: translateY(120vh) translateX(0); }
+  12%  { opacity:.95; }
+  70%  { opacity:.95; transform: translateY(30vh) translateX(12vw); }
+  100% { opacity:0;   transform: translateY(-20vh) translateX(24vw); }
 }
