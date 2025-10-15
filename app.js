@@ -31,7 +31,7 @@
 })();
 
 /* ===========================================
-   MURCIÉLAGOS (de abajo hacia arriba)
+   MURCIÉLAGOS: desde el CENTRO ABAJO y se abren
 =========================================== */
 (function(){
   var wrap = document.getElementById("bats");
@@ -46,16 +46,15 @@
   for(var i=0;i<N;i++){
     var el = document.createElement("div");
     var goRight = Math.random() < 0.5;
-    el.className = "bat " + (goRight ? "up-right" : "up-left");
 
-    // Punto de salida horizontal (en la base)
-    el.style.left = rand(20, 80).toFixed(1) + "vw";
+    // Clases: centrado + dirección
+    el.className = "bat centered " + (goRight ? "up-right" : "up-left");
 
-    // Duración / retraso (NO tocamos transform)
+    // Duración / retraso (NO tocamos transform para no romper la animación)
     el.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
     el.style.animationDelay    = rand(0, delaySpread).toFixed(2) + "s";
 
-    // Tamaño (alto se calcula por el ::before)
+    // Tamaño (alto se calcula por el ::before del CSS)
     el.style.width = Math.round(rand(14, 22)) + "vw";
 
     wrap.appendChild(el);
@@ -106,7 +105,7 @@
     audio.currentTime = 0;
     audio.play().catch(function () {
       // Autoplay bloqueado → esperar primera interacción del usuario
-      started = false; // permitimos reintento en la interacción
+      started = false;
       window.addEventListener("pointerdown", onInteract, {passive:true});
       window.addEventListener("touchstart", onInteract, {passive:true});
       window.addEventListener("click", onInteract, {passive:true});
@@ -114,16 +113,14 @@
     });
   }
 
-  // Intento inicial (si el navegador lo permite, sonará solo)
   window.addEventListener("load", tryAutoplay);
 
-  // Marcar que terminó (no volver a reproducir)
   audio.addEventListener("ended", function () {
     finished = true;
     cleanupActivators();
   });
 
-  // Pausar al ocultar/salir; NO reanudar automáticamente
+  // Pausa al ocultar/salir; NO reanudar automáticamente
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) audio.pause();
   });
