@@ -9,10 +9,10 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Fondo (tu imagen ya incluye “FALTAN…”) -->
+  <!-- Fondo del póster -->
   <div id="bg"></div>
 
-  <!-- Contador: DÍAS – HORAS – MIN (solo números) -->
+  <!-- Contador: DÍAS – HORAS – MIN -->
   <section id="countdown" aria-label="Cuenta regresiva">
     <div class="grid">
       <div class="cell"><span id="dd">00</span></div>
@@ -21,10 +21,23 @@
     </div>
   </section>
 
-  <!-- Murciélagos -->
+  <!-- Murciélagos (desde centro abajo abriéndose) -->
   <div id="bats"></div>
 
-  <!-- Música (archivo en la raíz) -->
+  <!-- Botón de ubicación -->
+  <a
+    id="loc"
+    class="loc-btn"
+    href="https://maps.app.goo.gl/9SMMDpJXYz45cFMP7"
+    target="_blank"
+    rel="noopener"
+    aria-label="Abrir ubicación en Google Maps"
+  >
+    <span class="pin">📍</span>
+    <span class="txt">Ver ubicación</span>
+  </a>
+
+  <!-- Música (1 sola vez) -->
   <audio id="bgm" src="musicaYMC.mp3" preload="auto" type="audio/mpeg"></audio>
 
   <script src="app.js"></script>
