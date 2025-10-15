@@ -9,10 +9,8 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Fondo único (ya incluye “FALTAN…” y el marco) -->
   <div id="bg"></div>
 
-  <!-- Contador: DÍAS – HORAS – MIN -->
   <section id="countdown" aria-label="Cuenta regresiva">
     <div class="grid">
       <div class="cell"><span id="dd">00</span></div>
@@ -21,8 +19,10 @@
     </div>
   </section>
 
-  <!-- Murciélagos -->
   <div id="bats"></div>
+
+  <!-- importa el MP3 desde la raíz -->
+  <audio id="bgm" src="musicaYMC.mp3" preload="auto"></audio>
 
   <script src="app.js"></script>
 </body>
