@@ -31,40 +31,54 @@
 })();
 
 /* ===========================================
-   MURCIÉLAGOS: desde el CENTRO ABAJO y se abren
+   MURCIÉLAGOS: muchas bandadas, rápidas, sin “posar”
 =========================================== */
 (function(){
   var wrap = document.getElementById("bats");
   if(!wrap) return;
 
-  var N = 8;
-  var durMin = 4.2, durMax = 6.2;
-  var delaySpread = 1.6;
+  // Configuración de “ráfagas”
+  var WAVES = 3;            // cuántas tandas
+  var PER_WAVE = 14;        // cuántos murciélagos por tanda
+  var SPACING = 400;        // ms entre tandas
+
+  // Duraciones rápidas (lineales, definidas en CSS; aquí las afinamos por elemento)
+  var durMin = 0.9, durMax = 1.6; // más rápido
+  var delaySpread = 0.5;          // poco desfase dentro de cada tanda
 
   function rand(a,b){ return a + Math.random()*(b-a); }
 
-  for(var i=0;i<N;i++){
-    var el = document.createElement("div");
-    var goRight = Math.random() < 0.5;
+  function spawnWave(){
+    for(var i=0;i<PER_WAVE;i++){
+      var el = document.createElement("div");
+      var goRight = Math.random() < 0.5;
 
-    // Clases: centrado + dirección
-    el.className = "bat centered " + (goRight ? "up-right" : "up-left");
+      // Centro abajo + dirección
+      el.className = "bat centered " + (goRight ? "up-right" : "up-left");
 
-    // Duración / retraso (NO tocamos transform para no romper la animación)
-    el.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
-    el.style.animationDelay    = rand(0, delaySpread).toFixed(2) + "s";
+      // Duración/retardo (rápidos y sin poses)
+      el.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
+      el.style.animationDelay    = rand(0, delaySpread).toFixed(2) + "s";
 
-    // Tamaño (alto se calcula por el ::before del CSS)
-    el.style.width = Math.round(rand(14, 22)) + "vw";
+      // Tamaño (si quieres más pequeños, baja el rango)
+      el.style.width = Math.round(rand(12, 20)) + "vw";
 
-    wrap.appendChild(el);
+      wrap.appendChild(el);
+    }
   }
 
-  // Limpieza del DOM tras las animaciones
-  var total = (durMax + delaySpread + 1.0) * 1000;
+  // Dispara varias tandas
+  for (var w=0; w<WAVES; w++){
+    (function(delay){
+      setTimeout(spawnWave, delay);
+    })(w * SPACING);
+  }
+
+  // Limpieza general (un poco después de la última tanda)
+  var lastDuration = durMax*1000 + delaySpread*1000;
   setTimeout(function(){
     if(wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
-  }, total);
+  }, WAVES*SPACING + lastDuration + 400);
 })();
 
 /* ===========================================
