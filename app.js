@@ -47,13 +47,21 @@
     var el = document.createElement("div");
     var goRight = Math.random() < 0.5;
     el.className = "bat " + (goRight ? "up-right" : "up-left");
+
+    // Punto de salida horizontal (en la base)
     el.style.left = rand(20, 80).toFixed(1) + "vw";
+
+    // Duración / retraso (NO tocamos transform)
     el.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
     el.style.animationDelay    = rand(0, delaySpread).toFixed(2) + "s";
+
+    // Tamaño (alto se calcula por el ::before)
     el.style.width = Math.round(rand(14, 22)) + "vw";
+
     wrap.appendChild(el);
   }
 
+  // Limpieza del DOM tras las animaciones
   var total = (durMax + delaySpread + 1.0) * 1000;
   setTimeout(function(){
     if(wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
@@ -61,68 +69,64 @@
 })();
 
 /* ===========================================
-   MÚSICA: reproducir 1 sola vez al entrar,
-   pausar al salir, sin reanudar al volver.
+   MÚSICA: intentar autoplay; si falla,
+   se activa en el 1er toque/click; suena 1 vez.
 =========================================== */
-(function(){
+(function () {
   var audio = document.getElementById("bgm");
-  if(!audio) return;
+  if (!audio) return;
 
-  audio.loop = false;      // solo una vez
+  audio.loop = false;   // solo una vez
   audio.volume = 0.75;
 
-  var started = false;     // ya intentamos/arrancamos
-  var finished = false;    // terminó de reproducir
+  var started = false;  // ya intentamos o iniciamos
+  var finished = false; // ya terminó (no repetir)
 
-  function removeActivator(){
-    var btn = document.getElementById("sound-activate");
-    if(btn && btn.parentNode) btn.parentNode.removeChild(btn);
+  function cleanupActivators() {
+    window.removeEventListener("pointerdown", onInteract);
+    window.removeEventListener("touchstart", onInteract);
+    window.removeEventListener("click", onInteract);
+    window.removeEventListener("keydown", onInteract);
   }
-
-  function showActivator(){
-    if (document.getElementById("sound-activate")) return;
-    var b = document.createElement("button");
-    b.id = "sound-activate";
-    b.textContent = "▶ Activar sonido";
-    Object.assign(b.style, {
-      position:"fixed", bottom:"16px", left:"50%", transform:"translateX(-50%)",
-      zIndex:10000, background:"rgba(0,0,0,.75)", color:"#FFD37A",
-      border:"1px solid rgba(255,211,122,.6)", borderRadius:"999px",
-      padding:"10px 16px", font:"600 14px system-ui,-apple-system,Segoe UI,Roboto,sans-serif",
-      letterSpacing:".3px", cursor:"pointer", backdropFilter:"blur(4px)"
-    });
-    var activate = function(){
-      if (finished) return;           // si ya terminó, no reproducimos de nuevo
-      audio.currentTime = 0;
-      audio.play().finally(removeActivator);
+  function onInteract() {
+    if (finished) { cleanupActivators(); return; }
+    if (!started) {
       started = true;
-    };
-    b.addEventListener("click", activate, {passive:true});
-    b.addEventListener("touchstart", activate, {passive:true});
-    document.body.appendChild(b);
+      audio.currentTime = 0;
+      audio.play().finally(cleanupActivators);
+    } else {
+      cleanupActivators();
+    }
   }
 
-  function tryPlayOnce(){
-    if (started || finished) return;  // no reintentes si ya comenzó/terminó
+  function tryAutoplay() {
+    if (started || finished) return;
     started = true;
     audio.setAttribute("playsinline", "");
     audio.currentTime = 0;
-    audio.play().then(removeActivator).catch(showActivator);
+    audio.play().catch(function () {
+      // Autoplay bloqueado → esperar primera interacción del usuario
+      started = false; // permitimos reintento en la interacción
+      window.addEventListener("pointerdown", onInteract, {passive:true});
+      window.addEventListener("touchstart", onInteract, {passive:true});
+      window.addEventListener("click", onInteract, {passive:true});
+      window.addEventListener("keydown", onInteract, false);
+    });
   }
 
-  // Intento inicial al cargar
-  window.addEventListener("load", tryPlayOnce);
+  // Intento inicial (si el navegador lo permite, sonará solo)
+  window.addEventListener("load", tryAutoplay);
 
-  // Marcar fin y asegurarnos de que no vuelva a sonar
-  audio.addEventListener("ended", function(){
+  // Marcar que terminó (no volver a reproducir)
+  audio.addEventListener("ended", function () {
     finished = true;
-    removeActivator();
+    cleanupActivators();
   });
 
-  // Pausar al ocultar o salir; NO reanudar automáticamente
-  document.addEventListener("visibilitychange", function(){
+  // Pausar al ocultar/salir; NO reanudar automáticamente
+  document.addEventListener("visibilitychange", function () {
     if (document.hidden) audio.pause();
   });
-  window.addEventListener("pagehide", function(){ audio.pause(); });
-  window.addEventListener("beforeunload", function(){ audio.pause(); });
+  window.addEventListener("pagehide", function () { audio.pause(); });
+  window.addEventListener("beforeunload", function () { audio.pause(); });
 })();
