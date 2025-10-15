@@ -9,8 +9,10 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Fondo (tu imagen ya incluye “FALTAN…”) -->
   <div id="bg"></div>
 
+  <!-- Contador: DÍAS – HORAS – MIN (solo números) -->
   <section id="countdown" aria-label="Cuenta regresiva">
     <div class="grid">
       <div class="cell"><span id="dd">00</span></div>
@@ -19,8 +21,11 @@
     </div>
   </section>
 
+  <!-- Murciélagos -->
   <div id="bats"></div>
-  <audio id="bgm" src="musicaYMC.mp3" preload="auto"></audio>
+
+  <!-- Música (archivo en la raíz) -->
+  <audio id="bgm" src="musicaYMC.mp3" preload="auto" type="audio/mpeg"></audio>
 
   <script src="app.js"></script>
 </body>
