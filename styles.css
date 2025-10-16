@@ -9,44 +9,46 @@ html,body{height:100%;margin:0;background:#000;font-family:Georgia,serif}
   z-index:0
 }
 
-/* ===== Contador (DÍA–HORA–MINUTOS) ===== */
+/* ===== Contador ===== */
 #countdown{
-  position:fixed;top:41.5%;left:12%;right:12%;height:10.8%;
+  position:fixed;top:41.2%;left:12%;right:12%;height:10.8%;
   z-index:5;display:flex;align-items:center;pointer-events:none
 }
 #countdown .grid{
   width:100%;height:100%;
   display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:center
 }
-#countdown .cell{display:flex;align-items:center;justify-content:center;padding:10px}
+#countdown .cell{display:flex;align-items:center;justify-content:center;padding:8px}
 #countdown .stack{display:flex;flex-direction:column;align-items:center}
+
+/* etiqueta arriba (pequeña, glow sutil) */
+#countdown .label{
+  margin-bottom:6px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:2.6px;
+  color:#FFC46A;
+  opacity:.95;
+  text-shadow:
+    0 0 6px rgba(255,165,60,.28),
+    0 0 12px rgba(255,165,60,.20);
+  font-size:1.9vw
+}
 
 /* números grandes */
 #countdown .num{
   font-weight:700;letter-spacing:.5px;line-height:1;color:#FFD37A;
   text-shadow:0 0 10px rgba(255,165,60,.38),0 0 22px rgba(255,165,60,.38),0 1px 0 rgba(0,0,0,.25);
-  font-size:6.2vw
+  font-size:5.6vw; /* un poco más chico para móviles */
 }
-/* etiqueta debajo (glow más sutil) */
-#countdown .label{
-  margin-top:6px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:2.5px;
-  color:#FFC46A;
-  opacity:.95;
-  text-shadow:
-    0 0 6px rgba(255,165,60,.25),
-    0 0 12px rgba(255,165,60,.18);
-  font-size:2.1vw
-}
+
 @media (min-width:1200px){
-  #countdown .num{font-size:54px}
-  #countdown .label{font-size:18px;letter-spacing:3px}
+  #countdown .num{font-size:50px}
+  #countdown .label{font-size:16px;letter-spacing:3px}
 }
 @media (max-width:420px){
-  #countdown .num{font-size:26px}
-  #countdown .label{font-size:11px;letter-spacing:2px}
+  #countdown .num{font-size:24px}
+  #countdown .label{font-size:10px;letter-spacing:2px;margin-bottom:4px}
 }
 
 /* ===== Murciélagos (PNG 3182×3200) ===== */
@@ -77,7 +79,7 @@ html,body{height:100%;margin:0;background:#000;font-family:Georgia,serif}
   animation:zoom-right 1.4s linear forwards
 }
 
-/* KEYFRAMES: van de abajo a arriba con deriva y desaparecen */
+/* KEYFRAMES */
 @keyframes zoom-left{
   0%   {opacity:0; transform:translate(-50%,110vh) translateX(0)}
   8%   {opacity:1}
