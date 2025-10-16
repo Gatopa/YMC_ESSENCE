@@ -31,19 +31,18 @@
 })();
 
 /* ===========================================
-   MURCIÉLAGOS: muchas bandadas, rápidas, sin “posar”
+   MURCIÉLAGOS: muchas bandadas, rápidas
 =========================================== */
 (function(){
   var wrap = document.getElementById("bats");
   if(!wrap) return;
 
-  // Configuración de “ráfagas”
-  var WAVES = 3;            // cuántas tandas
-  var PER_WAVE = 14;        // cuántos murciélagos por tanda
+  // Configuración de ráfagas
+  var WAVES = 3;            // tandas
+  var PER_WAVE = 14;        // murciélagos por tanda
   var SPACING = 400;        // ms entre tandas
 
-  // Duraciones rápidas (lineales, definidas en CSS; aquí las afinamos por elemento)
-  var durMin = 0.9, durMax = 1.6; // más rápido
+  var durMin = 0.9, durMax = 1.6; // rápido
   var delaySpread = 0.5;          // poco desfase dentro de cada tanda
 
   function rand(a,b){ return a + Math.random()*(b-a); }
@@ -53,28 +52,21 @@
       var el = document.createElement("div");
       var goRight = Math.random() < 0.5;
 
-      // Centro abajo + dirección
       el.className = "bat centered " + (goRight ? "up-right" : "up-left");
 
-      // Duración/retardo (rápidos y sin poses)
       el.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
       el.style.animationDelay    = rand(0, delaySpread).toFixed(2) + "s";
 
-      // Tamaño (si quieres más pequeños, baja el rango)
       el.style.width = Math.round(rand(12, 20)) + "vw";
 
       wrap.appendChild(el);
     }
   }
 
-  // Dispara varias tandas
   for (var w=0; w<WAVES; w++){
-    (function(delay){
-      setTimeout(spawnWave, delay);
-    })(w * SPACING);
+    (function(delay){ setTimeout(spawnWave, delay); })(w * SPACING);
   }
 
-  // Limpieza general (un poco después de la última tanda)
   var lastDuration = durMax*1000 + delaySpread*1000;
   setTimeout(function(){
     if(wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
@@ -82,8 +74,7 @@
 })();
 
 /* ===========================================
-   MÚSICA: intentar autoplay; si falla,
-   se activa en el 1er toque/click; suena 1 vez.
+   MÚSICA: autoplay si se puede; si no, 1er toque/click; suena 1 vez
 =========================================== */
 (function () {
   var audio = document.getElementById("bgm");
@@ -92,8 +83,8 @@
   audio.loop = false;   // solo una vez
   audio.volume = 0.75;
 
-  var started = false;  // ya intentamos o iniciamos
-  var finished = false; // ya terminó (no repetir)
+  var started = false;
+  var finished = false;
 
   function cleanupActivators() {
     window.removeEventListener("pointerdown", onInteract);
@@ -118,8 +109,7 @@
     audio.setAttribute("playsinline", "");
     audio.currentTime = 0;
     audio.play().catch(function () {
-      // Autoplay bloqueado → esperar primera interacción del usuario
-      started = false;
+      started = false; // reintentar al primer toque/click
       window.addEventListener("pointerdown", onInteract, {passive:true});
       window.addEventListener("touchstart", onInteract, {passive:true});
       window.addEventListener("click", onInteract, {passive:true});
@@ -134,7 +124,6 @@
     cleanupActivators();
   });
 
-  // Pausa al ocultar/salir; NO reanudar automáticamente
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) audio.pause();
   });
