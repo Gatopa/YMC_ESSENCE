@@ -12,12 +12,27 @@
   <!-- Fondo del póster -->
   <div id="bg"></div>
 
-  <!-- Contador: DÍAS – HORAS – MIN -->
+  <!-- Contador: DÍA – HORA – MINUTOS -->
   <section id="countdown" aria-label="Cuenta regresiva">
     <div class="grid">
-      <div class="cell"><span id="dd">00</span></div>
-      <div class="cell"><span id="hh">00</span></div>
-      <div class="cell"><span id="mm">00</span></div>
+      <div class="cell">
+        <div class="stack">
+          <span id="dd" class="num">00</span>
+          <span class="label" aria-hidden="true">DÍA</span>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="stack">
+          <span id="hh" class="num">00</span>
+          <span class="label" aria-hidden="true">HORA</span>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="stack">
+          <span id="mm" class="num">00</span>
+          <span class="label" aria-hidden="true">MINUTOS</span>
+        </div>
+      </div>
     </div>
   </section>
 
