@@ -31,19 +31,17 @@
 })();
 
 /* ===========================================
-   MURCIÉLAGOS: muchas bandadas, rápidas
+   MURCIÉLAGOS: ráfagas rápidas
 =========================================== */
 (function(){
   var wrap = document.getElementById("bats");
   if(!wrap) return;
 
-  // Configuración de ráfagas
   var WAVES = 3;            // tandas
-  var PER_WAVE = 14;        // murciélagos por tanda
+  var PER_WAVE = 14;        // por tanda
   var SPACING = 400;        // ms entre tandas
-
-  var durMin = 0.9, durMax = 1.6; // rápido
-  var delaySpread = 0.5;          // poco desfase dentro de cada tanda
+  var durMin = 0.9, durMax = 1.6;
+  var delaySpread = 0.5;
 
   function rand(a,b){ return a + Math.random()*(b-a); }
 
@@ -51,14 +49,10 @@
     for(var i=0;i<PER_WAVE;i++){
       var el = document.createElement("div");
       var goRight = Math.random() < 0.5;
-
       el.className = "bat centered " + (goRight ? "up-right" : "up-left");
-
       el.style.animationDuration = rand(durMin, durMax).toFixed(2) + "s";
       el.style.animationDelay    = rand(0, delaySpread).toFixed(2) + "s";
-
       el.style.width = Math.round(rand(12, 20)) + "vw";
-
       wrap.appendChild(el);
     }
   }
@@ -80,7 +74,7 @@
   var audio = document.getElementById("bgm");
   if (!audio) return;
 
-  audio.loop = false;   // solo una vez
+  audio.loop = false;
   audio.volume = 0.75;
 
   var started = false;
@@ -109,7 +103,7 @@
     audio.setAttribute("playsinline", "");
     audio.currentTime = 0;
     audio.play().catch(function () {
-      started = false; // reintentar al primer toque/click
+      started = false;
       window.addEventListener("pointerdown", onInteract, {passive:true});
       window.addEventListener("touchstart", onInteract, {passive:true});
       window.addEventListener("click", onInteract, {passive:true});
